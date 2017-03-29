@@ -1,9 +1,9 @@
 # webproject
 
 <p -- basic spec -- </p>
-<p>* IDE : </p>
-<p>* DB : </p>
-<p>* use tech: </p>
+<p>* IDE : Spring STS</p>
+<p>* DB : Oracle/sqlDeveloper </p>
+<p>* use tech: HTML, Javascript, Ajax, Css, Bootstrap, JDBC, MVC Pattern</p>
 
 <p> -- ERD -- </p>
 
