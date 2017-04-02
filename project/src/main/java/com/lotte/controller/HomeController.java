@@ -1,4 +1,4 @@
-package com.lotte.project;
+package com.lotte.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
