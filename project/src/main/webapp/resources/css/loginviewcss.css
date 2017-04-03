@@ -81,6 +81,9 @@ body{
 #btn_group2{
     text-align: center;
 }
+#btn_group3{
+	 text-align: center;
+}
 #adress{
 	width: 400px;
 }
@@ -98,11 +101,15 @@ body{
 	color: #f5f5f5;
     padding: 10px 16px;
     font-size: 18px;
-    width: 550px;
-    margin: 40px;
+    width: 250px;
+    margin: 0 25px 25px;
 }
 #alert-login{
 	width: 550px;
-    margin: 40px 40px 0;
+    margin: 40px;
     font-size: 18px;
+}
+#btn_go{
+	 width: 250px;
+	 margin: 0 25px 25px;
 }

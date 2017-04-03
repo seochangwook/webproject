@@ -30,7 +30,7 @@ public class AjaxController {
 	@RequestMapping(value = "/loginajax", method = RequestMethod.POST, produces = {"application/json"})
 	public @ResponseBody Map<String, Object> login(@RequestBody final  LoginDTO logininfo) { 
 		Map<String, Object> retVal = new HashMap<String, Object>();
-		boolean is_insert_success = false;
+		boolean is_insert_success = true;
 		
 		System.out.println("login ajax call (data: " + logininfo.getUserId() + "/" + logininfo.getUserPassword());
 		
