@@ -14,7 +14,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="resources/js/secure/rollups/aes.js"></script>
 
-<script>
+<script type="text/javascript">
 		$(function(){
 			//click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
 			$('#btn_login').click(function(){

@@ -12,7 +12,10 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/mainpageviewcss.css" type="text/css"/>
-<script>
+<script type="text/javascript">
+$(document).ready(function(){
+	sessionCheck(); //세션검사//
+});
 		$(function(){
 			//click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
 			$('#btn_click').click(function(){
@@ -57,7 +60,7 @@
 			});
 			$('#btn_logout').click(function(){
 				alert("["+$('#sessionid').val() + "] 로그아웃... 이용해주셔서 감사합니다. (로그인 페이지로 이동합니다)");
-				
+			
 				var sessionid = 'sessionid='+$('#sessionid').val();
 				
 				//ajax call//
@@ -71,7 +74,8 @@
 					
 						if(is_check == 'true'){
 							//세션종료 성공 시 다시 로그인 페이지로 리다이렉션
-							window.location.href = "http://localhost:8080/project/login";
+							var url = "http://localhost:8080/project/login";
+							$(location).attr("href", url);
 						}
 						
 						else if(is_check == 'false'){
@@ -83,8 +87,17 @@
 					}
 				});
 			});
-			
 		});
+function sessionCheck(){
+	var getsessionid = $('#sessionid').val();
+	
+	if(getsessionid == ''){
+		alert('세션이 만료된 페이지 입니다.');
+		
+		var url = "http://localhost:8080/project/login";
+		$(location).attr("href", url);
+	}
+}
 </script>
 </head>
 <body>
