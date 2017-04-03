@@ -17,7 +17,6 @@
 	</environments>
 	<mappers>
 		<!-- sql service add mapper tag -->
-		<mapper resource="mapper/sql.xml"/>
 		<mapper resource="mapper/procedure.xml"/>
 	</mappers>
 </configuration>

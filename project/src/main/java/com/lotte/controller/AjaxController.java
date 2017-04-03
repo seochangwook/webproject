@@ -1,19 +1,8 @@
 package com.lotte.controller;
 
-import java.io.File;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,31 +12,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.lotte.dto.LoginDTO;
+import com.lotte.service.LoginService;
 
 @Controller
 @SessionAttributes("sessionId") //id라는 키로 저장된 attribute는 세션객체에 저장 됨
-public class AjaxController {
+public class AjaxController {	
 	@RequestMapping(value = "/loginajax", method = RequestMethod.POST, produces = {"application/json"})
-	public @ResponseBody Map<String, Object> login(@RequestBody final  LoginDTO logininfo, Model view) { 
+	public @ResponseBody Map<String, Object> login(@RequestBody final  LoginDTO loginInfo, Model view) { 
 		Map<String, Object> retVal = new HashMap<String, Object>();
-		boolean is_insert_success = true;
+		boolean loginSucces = false;
 		
-		System.out.println("login ajax call (data: " + logininfo.getUserId() + "/" + logininfo.getUserPassword()+")");
-		
-		//세션 적용//
-		view.addAttribute("sessionId", logininfo.getUserId());
-		
-		System.out.println();
+		System.out.println("login ajax call (data: " + loginInfo.getUserId() + "/" + loginInfo.getUserPassword()+")");
 		
 		//해당 로그인 관련 서비스 호출//
+		if(LoginService.checkLogin(loginInfo)){
+			//세션 적용//
+			view.addAttribute("sessionId", loginInfo.getUserId());
+			loginSucces = true;
+		}
 		
-		retVal.put("check", ""+is_insert_success);
+		System.out.println();		
 		
+		retVal.put("check", ""+loginSucces);
 		return retVal;
 	}
 	

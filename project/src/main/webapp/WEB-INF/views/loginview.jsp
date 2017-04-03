@@ -85,7 +85,7 @@
 							}
 						},
 						error: function(retVal, status, er){
-							alert("error: "+data+" status: "+status+" er:"+er);
+							alert("error: "+retVal+" status: "+status+" er:"+er);
 						}
 					});
 				}
