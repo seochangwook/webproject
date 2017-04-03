@@ -68,7 +68,7 @@
 								//submit을 만들어준다.//
 								print_str += "<form name='TransTest' id='tForm' method='post' action='http://localhost:8080/project/mainpage'>";
 								//hidden필드를 이용해서 전달할 값을 설정//
-								print_str += "<input type='hidden' name='country' value='"+input_id+"'>";
+								print_str += "<input type='hidden' name='stuId' value='"+input_id+"'>";
 								print_str += "<button name='subject' class='btn btn-success' type='submit' value='move'>수강신청 페이지 이동</button>";
 								
 								$('#btn_group').append(print_str); //설정한 내용들을 다시 뷰에 보여줌//
