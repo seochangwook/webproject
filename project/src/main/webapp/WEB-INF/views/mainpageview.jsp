@@ -56,7 +56,32 @@
 				$('#contentview').append(html_str);
 			});
 			$('#btn_logout').click(function(){
-				alert("logout click");
+				alert("["+$('#sessionid').val() + "] 로그아웃... 이용해주셔서 감사합니다. (로그인 페이지로 이동합니다)");
+				
+				var sessionid = 'sessionid='+$('#sessionid').val();
+				
+				//ajax call//
+				$.ajax({
+					url: "http://localhost:8080/project/logoutajax",
+					type: 'POST',
+					dataType: 'text',
+					data: sessionid,
+					success: function(retVal){
+						var is_check = retVal;
+					
+						if(is_check == 'true'){
+							//세션종료 성공 시 다시 로그인 페이지로 리다이렉션
+							window.location.href = "http://localhost:8080/project/login";
+						}
+						
+						else if(is_check == 'false'){
+							alert('세션종료 실패');	
+						}
+					},
+					error: function(retVal, status, er){
+						alert("error: "+retVal+" status: "+status+" er:"+er);
+					}
+				});
 			});
 			
 		});
@@ -84,7 +109,7 @@
         <li><a href="#">학과 공지사항</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" id="btn_logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href="#" id="btn_logout"><span class="glyphicon glyphicon-log-in"></span>&nbsp로그아웃</a></li>
       </ul>
     </div>
   </div>
@@ -96,7 +121,8 @@
       	<h2>나의 정보</h2>
 		<div class="card">
   			<img src="resources/images/uploadimg/${imagefile}" class="img-circle" alt="Cinque Terre" style="width:100%">
-  			<h4 id="title"><b>서창욱(${userid})</b></h4> 
+  			<h4 id="title"><b>서창욱(${sessionId})</b></h4> 
+  			<input type="hidden" id="sessionid" value='${sessionId}'>
   			<div>
     			<p id="info1">나이 : 26살</p> 
     			<p id="info1">학과 : ${major}</p>
