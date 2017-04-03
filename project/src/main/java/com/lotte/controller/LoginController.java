@@ -16,6 +16,8 @@ public class LoginController {
 	public ModelAndView loginview(Locale locale) throws IOException {
 		ModelAndView view = new ModelAndView();
 		
+		System.out.println("");
+		
 		view.setViewName("/loginview");
 		
 		return view;

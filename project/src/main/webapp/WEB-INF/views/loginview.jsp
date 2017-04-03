@@ -14,7 +14,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="resources/js/secure/rollups/aes.js"></script>
 
-<script>
+<script type="text/javascript">
 		$(function(){
 			//click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
 			$('#btn_login').click(function(){
@@ -68,10 +68,16 @@
 								//submit을 만들어준다.//
 								print_str += "<form name='TransTest' id='tForm' method='post' action='http://localhost:8080/project/mainpage'>";
 								//hidden필드를 이용해서 전달할 값을 설정//
+
 								print_str += "<input type='hidden' name='country' value='"+input_id+"'>";
 								print_str += "<div id='btn_group3'>";
 								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지 이동</button>";
 								print_str += "<button name='subject2' class='btn btn-login' id='btn_go' type='submit' value='move'>기타 페이지 이동</button></div>";
+
+								print_str += "<input type='hidden' name='stuId' value='"+input_id+"'>";
+								print_str += "<button name='subject' class='btn btn-success' type='submit' value='move'>수강신청 페이지 이동</button>";
+								
+
 								$('#btn_group').append(print_str); //설정한 내용들을 다시 뷰에 보여줌//
 							}
 							
@@ -153,7 +159,7 @@
 				var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
 				
 				$.ajax({
-					url: "http://localhost:8080/testspring/userinfo_post",
+					url: "http://localhost:8080/testspring/enrollajax",
 					type: 'POST',
 					dataType: 'json',
 					data: trans_json,

@@ -1,1 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sql">
+	<select id="myenrolllist" parameterType="hashmap" resultType="vo.MyEnrollCourseModel">
+		<!-- 나의 수강정보를 보여주는 쿼리 -->
+		SELECT stu_number, c.c_number, c.c_name, c.c_date_time, c.c_grade, e.c_memo 
+		FROM course c, enroll e 
+		WHERE c.c_number = e.c_number AND e.STU_NUMBER= ${stunumber}
+	</select>
+</mapper>
