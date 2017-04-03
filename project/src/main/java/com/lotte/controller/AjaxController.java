@@ -36,16 +36,6 @@ public class AjaxController {
 		
 		//해당 로그인 관련 서비스 호출//
 		
-		/*is_insert_success = dao.logincheck(logininfo);
-		
-		if(is_insert_success == true){
-			retVal.put("check", ""+is_insert_success);
-		}
-		
-		else if(is_insert_success == false){
-			retVal.put("check", ""+is_insert_success);
-		}*/
-		
 		retVal.put("check", ""+is_insert_success);
 		
 		return retVal;
