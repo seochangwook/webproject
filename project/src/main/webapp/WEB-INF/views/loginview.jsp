@@ -152,7 +152,7 @@
 				var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
 				
 				$.ajax({
-					url: "http://localhost:8080/testspring/userinfo_post",
+					url: "http://localhost:8080/testspring/enrollajax",
 					type: 'POST',
 					dataType: 'json',
 					data: trans_json,
