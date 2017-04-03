@@ -210,7 +210,7 @@
 		  	  	<button type="button" class="btn btn-lg btn-block btn-login" id="btn_enroll" data-toggle="modal" data-target="#myModal">회원가입</button>
 		    </div>
 		    <div id="btn_group2">
-		    	<button type="button" class="btn btn-login" id="btn_search_id">아이디 찾기</button>
+		    	<button type="button" class="btn btn-login " id="btn_search_id">아이디 찾기</button>
 	  			<button type="button" class="btn btn-warning btn-login" id="btn_search_password">비밀번호 찾기</button>
 	  		</div>
 		</form>

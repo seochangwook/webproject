@@ -32,10 +32,7 @@ body{
   border-color: #333;
 }
 
-.btn-login:visited {
-  background-color: #555; 
-  color: white;
-}
+
 
 #login-title{
 	font-size: 40px;
