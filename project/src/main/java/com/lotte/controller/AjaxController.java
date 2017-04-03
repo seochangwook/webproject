@@ -36,6 +36,7 @@ public class AjaxController {
 		
 		//해당 로그인 관련 서비스 호출//
 		System.out.println();
+		System.out.println("백희원 커밋 테스트");
 		retVal.put("check", ""+is_insert_success);
 		
 		return retVal;
