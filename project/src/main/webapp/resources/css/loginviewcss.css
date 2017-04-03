@@ -1,0 +1,108 @@
+@CHARSET "UTF-8";
+body{
+	background-repeat: no-repeat;
+	background-size: 100%;
+	background-color: rgba(0,0,0,3,0.3)
+}
+.alert-success{
+	width : 600px;
+}
+.login-page{
+	display: table;
+	margin: auto;
+}
+.login-lab{
+	font-size: 20px;
+}
+.btn-login{
+	color: #f5f5f5;
+    background-color: rgba(0,0,0,.7);
+    border-color: #333;
+    padding: 10px 16px;
+    font-size: 18px;
+}
+.btn-login:hover {
+    background-color: #555; 
+    color: white;
+    border-color: #333;
+}
+.btn-login:active {
+  background-color: #555; 
+  color: white;
+  border-color: #333;
+}
+
+.btn-login:visited {
+  background-color: #555; 
+  color: white;
+}
+
+#login-title{
+	font-size: 40px;
+}
+#id{
+	width : 200px;
+}
+#pwd{
+	width: 200px;
+}
+#email{
+	width: 300px;
+}
+#idinput{
+	width : 550px;
+	margin: 0 40px;
+	height: 40px;
+	font-size: 18px;
+}
+#passwordinput{
+	width : 550px;
+	margin: 0 40px;
+	height: 40px;
+	font-size: 18px;
+}
+#btn_login{
+	width: 550px;
+    margin: 40px;
+    
+}
+#btn_enroll{
+	width: 550px;
+    margin: 40px;
+}
+#btn_search_id{
+    width: 250px;
+    margin: 0 25px 25px;
+}
+#btn_search_password{
+   width: 250px;
+    margin: 0 25px 25px;
+}
+#btn_group2{
+    text-align: center;
+}
+#adress{
+	width: 400px;
+}
+#login-cont{
+	margin-top: 20%;
+	background-color: #ddd;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 10px;
+    vertical-align:middle;
+  	background: rgba(0,0,0,.4);
+    color: #eee;
+}
+#btn-goMain{
+	color: #f5f5f5;
+    padding: 10px 16px;
+    font-size: 18px;
+    width: 550px;
+    margin: 40px;
+}
+#alert-login{
+	width: 550px;
+    margin: 40px 40px 0;
+    font-size: 18px;
+}

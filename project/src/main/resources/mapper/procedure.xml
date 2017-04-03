@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="procedure">
+	<resultMap type="hashmap" id="p_userauth"></resultMap>
+	<resultMap type="hashmap" id="p_course"></resultMap>
+	
+	<select id="p_userauth" statementType="CALLABLE">
+	{
+		CALL PRO_LOGIN_ENROLL(
+			<!-- Procedure의 변수 -->
+			#{in_pro_type},
+			#{in_stu_id},
+			#{in_stu_name},
+			#{in_stu_password},
+			#{in_stu_birth},
+			#{in_stu_number},
+			#{in_stu_address},
+			#{in_stu_deptno},
+			#{in_stu_grade},
+			#{in_stu_email},
+			#{in_stu_phonenumber},
+			#{in_stu_photo},
+			#{out_result, mode=OUT, jdbcType=VARCHAR, javaType=String, resultMap=p_userauth}
+		)
+	}
+	</select>
+	
+	<select id="p_course" statementType="CALLABLE">
+	{
+		CALL PRO_COURSE_MANAGE(
+			<!-- Procedure의 변수 -->
+			#{in_pro_type},
+			#{in_stu_number},
+			#{in_c_number},
+			#{in_c_memo},
+			#{out_result, mode=OUT, jdbcType=number, javaType=int, resultMap=p_course}
+		)
+	}
+	</select>
+</mapper>
