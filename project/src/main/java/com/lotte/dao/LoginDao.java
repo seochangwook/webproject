@@ -14,23 +14,20 @@ import com.lotte.dto.LoginDTO;
 @Repository
 public class LoginDao {
 	private String res = "/mybatis-config.xml";
-	private String namespace = "procedure";
+	private String namespace = "procedurestu";
 
 	SqlSessionFactory factory = null;
 	InputStream is = null;
 	SqlSession session = null;	
 	
 	public boolean checkLogin(LoginDTO loginDTO) {
-		System.out.println("LoginDao");
 		boolean isSuccess = false;
+		
 		try {		
 		
 			is = Resources.getResourceAsStream(res);
-			System.out.println("2");
 			factory = new SqlSessionFactoryBuilder().build(is);
-			System.out.println("3");
 			session = factory.openSession();
-			System.out.println("4");
 			
 			HashMap<String,Object> parammap = new HashMap<String, Object>();
 			
@@ -47,11 +44,10 @@ public class LoginDao {
 			parammap.put("in_stu_phonenumber", "");
 			parammap.put("in_stu_photo", "");
 		
-			System.out.println("selectStart");
 			session.selectList(namespace+".p_userauth", parammap);
-			System.out.println("selectEnd");
 			//result print//
 			System.out.println("result: " + parammap.get("out_result").toString());
+			
 			if(parammap.get("out_result").toString().equals("true")){
 				isSuccess = true;
 			}

@@ -71,13 +71,11 @@
 
 								print_str += "<input type='hidden' name='country' value='"+input_id+"'>";
 								print_str += "<div id='btn_group3'>";
-								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지 이동</button>";
-								print_str += "<button name='subject2' class='btn btn-login' id='btn_go' type='submit' value='move'>기타 페이지 이동</button></div>";
-
 								print_str += "<input type='hidden' name='stuId' value='"+input_id+"'>";
-								print_str += "<button name='subject' class='btn btn-success' type='submit' value='move'>수강신청 페이지 이동</button>";
-								
-
+								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지 이동</button>";
+								print_str += "</form>";
+								print_str += "<button name='subject2' class='btn btn-login' id='btn_go' value='move'>기타 페이지 이동</button></div>";
+	
 								$('#btn_group').append(print_str); //설정한 내용들을 다시 뷰에 보여줌//
 							}
 							
@@ -97,15 +95,8 @@
 					});
 				}
 			});
-			$('#btn_search_id').click(function(){
-				alert("아이디 찾기");
-			});
 			$('[data-toggle="tooltip"]').tooltip(); 
 		});
-		
-		function login_user(){
-			alert('Succcess Login...');
-		}
 		
 		//Modal Dialog 이벤트//
 		function modalview(){
@@ -194,6 +185,121 @@
 				});
 			}
 		}
+		
+		//Modal Dialog 이벤트//
+		function modalview_searchid(){
+			var stunumber_value = $('#stunumberinput').val();
+			var stuname_value = $('#stunameinput').val();
+			
+			var trans_objeect = 
+		    {
+		        'stuNumber':stunumber_value,
+		        'stuName':''+stuname_value
+		    }
+			
+			var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+			
+			//ajax call//
+			$.ajax({
+					url: "http://localhost:8080/project/idsearchajax",
+					type: 'POST',
+					dataType: 'json',
+					data: trans_json,
+					contentType: 'application/json',
+					mimeType: 'application/json',
+					success: function(retVal){
+						var searchid = retVal.id;
+						
+						if(searchid == ''){
+							alert('검색실패. 등록되지 않은 학생입니다.');
+						
+							$('#stunumberinput').val('');
+							$('#stunameinput').val('');
+						}
+						
+						else{
+							alert(stuname_value+'님의 아이디는 [' + searchid + '] 입니다.');
+							
+							$('#stunumberinput').val('');
+							$('#stunameinput').val('');
+						}
+					},
+					error: function(retVal, status, er){
+						alert("error: "+data+" status: "+status+" er:"+er);
+					}
+				});
+		}
+		
+		function mailsend(){
+			var email_value = $('#stuemail').val();
+			var stuid = $('#stuidinput_p').val();
+			
+			alert('send mail' + email_value + "/" + stuid);
+			
+			var trans_objeect = 
+		    {
+		        'stuId':stuid,
+		        'stuEmail':''+email_value
+		    }
+			
+			var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+			
+			//ajax call//
+			$.ajax({
+					url: "http://localhost:8080/project/passwordsearchajax",
+					type: 'POST',
+					dataType: 'json',
+					data: trans_json,
+					contentType: 'application/json',
+					mimeType: 'application/json',
+					success: function(retVal){
+						var searchpassword = retVal.password;
+						var authnumber = retVal.authnumber;
+						
+						if(searchpassword == ''){
+							alert('실페. 등록되지 않은 학생입니다.');
+						
+							$('#stuemail').val('');
+							$('#stuidinput_p').val('');
+						}
+						
+						else{
+							alert(stuid+'님의 비밀번호는 [' + searchpassword + '] 입니다.' + '/'+authnumber);
+							
+							var print_str = '';
+							print_str += "<input type='hidden' id='passwordstu' name='stupassword' value='"+searchpassword+"'>";
+							print_str += "<input type='hidden' id='authnumberemail' name='stuauth' value='"+authnumber+"'>";
+							
+							$('#myModal_passwordsearch').append(print_str);
+						}
+					},
+					error: function(retVal, status, er){
+						alert("error: "+data+" status: "+status+" er:"+er);
+					}
+				});
+		}
+		
+		//Modal Dialog 이벤트//
+		function modalview_decrypt(){
+			var auth = $('#authnumber').val();
+			var authnum = $('#authnumberemail').val();
+			var enpassword = $('#passwordstu').val();
+			
+			alert(authnum);
+			
+			if(auth == authnum){
+				//비밀번호 암호화//
+				var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
+				var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
+				var decrypted_password = CryptoJS.AES.decrypt(enpassword, key, { iv: iv });
+				
+				alert('비밀번호는 ['+decrypted_password+'] 입니다.');	
+			}
+			
+			else{
+				alert('인증번호가 틀렸습니다. 다시 전송받으세요.');
+			}
+		}
 </script>
 
 </head>
@@ -216,8 +322,8 @@
 		  	  	<button type="button" class="btn btn-lg btn-block btn-login" id="btn_enroll" data-toggle="modal" data-target="#myModal">회원가입</button>
 		    </div>
 		    <div id="btn_group2">
-		    	<button type="button" class="btn btn-login " id="btn_search_id">아이디 찾기</button>
-	  			<button type="button" class="btn btn-warning btn-login" id="btn_search_password">비밀번호 찾기</button>
+		    	<button type="button" class="btn btn-login " id="btn_search_id" data-toggle="modal" data-target="#myModal_idsearch">아이디 찾기</button>
+	  			<button type="button" class="btn btn-warning btn-login" id="btn_search_password" data-toggle="modal" data-target="#myModal_passwordsearch">비밀번호 찾기</button>
 	  		</div>
 		</form>
 	</div>
@@ -297,6 +403,78 @@
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton" onclick="modalview()">등록</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal_idsearch" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title">아이디 찾기</h2>
+          <h5>학번과 이름으로 검색합니다.</h5>
+        </div>
+        <div class="modal-body">
+          	<form>
+          		<label for="usr">* 학번을 입력하시오.</label>
+				<div class="form-group-name" size="10">
+					<input type="text" class="form-control" id="stunumberinput">
+	    		</div>
+	    		<label for="pwd">* 이름을 입력하시오.</label>
+	    		<div class="form-group-passowrd">
+	      			<input type="text" class="form-control" id="stunameinput">
+	    		</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal" id="searchbutton" onclick="modalview_searchid()">검색</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal_passwordsearch" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title">비밀번호 찾기</h2>
+          <h5>인증번호를 전송받을 메일주소와 아이디를 입력하시오.</h5>
+        </div>
+        <div class="modal-body">
+          	<form>
+          		<label for="usr">* 아이디를 입력하시오.</label>
+				<div class="form-group-name" size="10">
+					<input type="text" class="form-control" id="stuidinput_p">
+	    		</div>
+	    		<label for="email">* 전송할 이메일을 입력하시오.</label>
+	    		<div class="input-group">
+    				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    				<input type="text" class="form-control" id="stuemail" placeholder="Email">
+  				</div>
+  				<br>
+  				<div class="mail-button">
+    				<button type="button" class="btn btn-lg btn-block btn-login" id="btn_mailsend" onclick="mailsend()">인증번호 보내기</button>
+  				</div>
+  				<br><hr><br>
+	    		<label for="pwd">* 메일로 전송받은 인증번호를 입력하시오.</label>
+	    		<div class="form-group-passowrd">
+	      			<input type="text" class="form-control" id="authnumber">
+	    		</div>
+			</form>
+        </div>
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal" id="searchbutton" onclick="modalview_decrypt()">검색</button>
         </div>
       </div>
     </div>

@@ -77,6 +77,14 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.4.2</version>
         </dependency>
+        
+        <!-- mail -->
+        <dependency> 
+        	<groupId>javax.mail</groupId> 
+        	<artifactId>mail</artifactId> 
+        	<version>1.4.7</version> 
+        </dependency>
+
 				
 		<!-- AspectJ -->
 		<dependency>
