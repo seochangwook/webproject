@@ -35,7 +35,7 @@ public class AjaxController {
 		System.out.println("login ajax call (data: " + logininfo.getUserId() + "/" + logininfo.getUserPassword());
 		
 		//해당 로그인 관련 서비스 호출//
-		
+		System.out.println();
 		retVal.put("check", ""+is_insert_success);
 		
 		return retVal;
