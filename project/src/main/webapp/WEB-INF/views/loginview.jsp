@@ -234,8 +234,6 @@
 			var email_value = $('#stuemail').val();
 			var stuid = $('#stuidinput_p').val();
 			
-			alert('send mail' + email_value + "/" + stuid);
-			
 			var trans_objeect = 
 		    {
 		        'stuId':stuid,
@@ -261,20 +259,25 @@
 						
 							$('#stuemail').val('');
 							$('#stuidinput_p').val('');
+							
+							$('#stuemail').attr("readonly", false);
+							$('#stuidinput_p').attr("readonly", false);
+							$('#btn_mailsend').attr("disabled", false);
+							$('#searchbuttonp').attr("disabled", true);
 						}
 						
 						else{
-							alert(stuid+'님의 비밀번호는 [' + searchpassword + '] 입니다.' + '/'+authnumber);
+							alert('적으신 이메일로 메일이 발송되었습니다.');
 							
 							var print_str = '';
 							print_str += "<input type='hidden' id='passwordstu' name='stupassword' value='"+searchpassword+"'>";
 							print_str += "<input type='hidden' id='authnumberemail' name='stuauth' value='"+authnumber+"'>";
 							
-							$('#myModal_passwordsearch').append(print_str);
+							$('#myModal_passwordsearch').append(print_str); //다이얼로그에 히든값을 저장//
 						}
 					},
 					error: function(retVal, status, er){
-						alert("error: "+data+" status: "+status+" er:"+er);
+						alert("error: "+retVal+" status: "+status+" er:"+er);
 					}
 				});
 		}
@@ -285,19 +288,23 @@
 			var authnum = $('#authnumberemail').val();
 			var enpassword = $('#passwordstu').val();
 			
-			alert(authnum);
-			
 			if(auth == authnum){
 				//비밀번호 암호화//
 				var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
 				var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
 				var decrypted_password = CryptoJS.AES.decrypt(enpassword, key, { iv: iv });
 				
-				alert('비밀번호는 ['+decrypted_password+'] 입니다.');	
+				alert('**인증성공** -> 비밀번호는 ['+decrypted_password.toString(CryptoJS.enc.Utf8)+'] 입니다.');	
+				
+				$('#passwordstu').val('');
+				$('#authnumberemail').val('');
 			}
 			
 			else{
 				alert('인증번호가 틀렸습니다. 다시 전송받으세요.');
+				
+				$('#passwordstu').val('');
+				$('#authnumberemail').val('');
 			}
 		}
 </script>
@@ -474,7 +481,7 @@
         </div>
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-        	<button type="button" class="btn btn-default" data-dismiss="modal" id="searchbutton" onclick="modalview_decrypt()">검색</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal" id="searchbuttonp" onclick="modalview_decrypt()">검색</button>
         </div>
       </div>
     </div>
