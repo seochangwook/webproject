@@ -2,7 +2,6 @@
 body{
 	background-repeat: no-repeat;
 	background-size: 100%;
-	background-color: rgba(0,0,0,3,0.3)
 }
 .alert-success{
 	width : 600px;
@@ -31,8 +30,27 @@ body{
   color: white;
   border-color: #333;
 }
-
-
+.modal-body {
+    position: relative;
+    padding: 30px;
+}
+.pnum{
+	float: left;
+}
+.pnum2{
+	float: left;
+	margin:0 10px 0 10px;
+	font-size:20px;
+}
+.form-join{
+	width: 250px;
+}
+.form-join2{
+	width: 200px;
+}
+.form-join2{
+	width: 150px;
+}
 
 #login-title{
 	font-size: 40px;
@@ -41,7 +59,11 @@ body{
 	width : 200px;
 }
 #pwd{
-	width: 200px;
+	float: left;
+	margin-right: 20px;
+}
+#pwd-conf{
+	float: left;
 }
 #email{
 	width: 300px;
@@ -81,16 +103,12 @@ body{
 #btn_group3{
 	 text-align: center;
 }
-#adress{
-	width: 400px;
-}
 #login-cont{
 	margin-top: 20%;
 	background-color: #ddd;
     display: inline-block;
     padding: 20px;
     border-radius: 10px;
-    vertical-align:middle;
   	background: rgba(0,0,0,.4);
     color: #eee;
 }
@@ -109,4 +127,43 @@ body{
 #btn_go{
 	 width: 250px;
 	 margin: 0 25px 25px;
+}
+#form-group-name{
+	width: 250px;
+	float: left;
+	margin-right:37px;
+}
+#form-group-student-number{
+	float: left;
+}
+#dept{
+	clear:both;
+}
+#usrId{
+	float: left;
+    margin-right: 20px;
+}
+#password{
+	clear:both;
+}
+#email{
+	clear:both;
+	width: 100%;
+}
+#radio{
+	margin-right: 37px;
+}
+#address{
+	width: 100%;
+}
+#photo{
+	clear:both;
+	padding: 20px 0 0 0;
+}
+#btn-password{
+	margin-left:20px;
+	margin-top:5px;
+}
+#join-title{
+	font-size:20px;
 }

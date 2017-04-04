@@ -344,67 +344,121 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">회원가입</h4>
+          <h4 class="modal-title" id="join-title"><b>회원가입</b></h4>
         </div>
         <div class="modal-body">
-          	<form>
-          		<label for="usr">* 아이디를 입력하시오.</label>
-				<div class="form-group-name" size="10">
-					<input type="text" class="form-control" id="id">
+          		<form>
+          		<div>
+	          		<div id="form-group-name" size="10">
+						<label for="name">* 이름: </label>
+						<input type="text" class="form-control form-join" id="name">
+		    		</div>
+		    		<div id="form-group-student-number" size="10">
+		    			<label for="num">* 학번: </label>
+						<input type="text" class="form-control form-join" id="num">
+		    		</div>
 	    		</div>
-	    		<label for="pwd">* 비밀번호를 입력하시오.</label>
-	    		<div class="form-group-passowrd">
-	      			<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control" id="pwd" placeholder="특수문자/대소문자 표기">
-	    		</div>
-	    		<br>
-	    		<label for="email">* 이메일을 입력하시오.</label>
-	    		<div class="input-group">
-    				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-    				<input id="email" type="text" class="form-control" id="email" placeholder="Email">
-  				</div>
+  				<div id="dept">
   				<br>
-  				<label for="sex">* 성별을 선택하시오.</label>
-  				<div>
-  					<div class="radio">
-  						<label><input type="radio" name="optradio" value="남">남</label>
-					</div>
-					<div class="radio">
-  						<label><input type="radio" name="optradio" value="여">여</label>
-					</div>
-  				</div>
-  				<label for="like">* 선호하는 것을 선택하시오.</label>
-  				<div>
-	  				<label class="checkbox-inline">
-	      				<input type="checkbox" value="C언어" name="chklist">C언어
-	    			</label>
-	    			<label class="checkbox-inline">
-	      				<input type="checkbox" value="Java Programming" name="chklist">Java Programming
-	    			</label>
-	    			<label class="checkbox-inline">
-	     				 <input type="checkbox" value="JavaScript" name="chklist">JavaScript
-	    			</label>
-  				</div>
-  				<br>
-  				<label for="address">* 주소를 입력하시오.</label>
-  				<div>
-	      			<input type="text" id="adress" placeholder="주소를 입력하시오">
-  				</div>
-  				<br>
-  				<label for="job">* 현재 직업군을 선택하세요.</label>
-  				<div>
+	    		<label for="job">* 학과: </label>
   					<select class="form-control" id="sel1">
-  						<option value="직업선택">직업선택</option>
-        				<option value="학생">학생</option>
-        				<option value="주부">주부</option>
-        				<option value="회사원">회사원</option>
-        				<option value="무직"n>무직</option>
+  						<option value="학과선택">학과선택</option>
+  						<option value="컴퓨터공학과">컴퓨터공학과</option>
+  						<option value="경영학과">경영학과</option>
+        				<option value="문헌정보학과">문헌정보학과</option>
+        				<option value="정보보호학과">정보보호학과</option>
+        				<option value="생명공학과">생명공학과</option>
+        				<option value="멀티미디어학과">멀티미디어학과</option>
+        				<option value="간호학과">간호학과</option>
+        				<option value="경제학과">경제학과</option>
+        				<option value="영어영문학과">영어영문학과</option>
+        				<option value="일어일문학과">일어일문학과</option>
+        				<option value="중어중문학과">중어중문학과</option>
+        				<option value="독어독문학과">독어독문학과</option>
+        				<option value="불어불문학과">불어불문학과</option>
+        				<option value="유아교육학과">유아교육학과</option>
+        				<option value="과학교육과">과학교육과</option>
+        				<option value="컴퓨터교육과">컴퓨터교육과</option>
+        				<option value="심리학과">심리학과</option>
+        				<option value="범죄심리학과">범죄심리학과</option>
+        				<option value="정치외교학과">정치외교학과</option>
+        				<option value="행정학과">행정학과</option>
       				</select>
   				</div>
   				<br>
-  				<label for="intro">* 간단한 자기소개를 입력하세요.</label>
   				<div>
-  					<textarea class="form-control" rows="5" id="comment"></textarea>
+	  				<label for="usr">* 아이디: </label>
+					<div class="form-group-name" size="10">
+						<input type="text" class="form-control form-join" id="usrId">
+						<button type="button" class="btn btn-default" id="confirm" >중복확인</button>
+		    		</div>
+	    		</div>
+	    		<br>
+	    		<div>
+		    		<div class="form-group-passowrd" id="pwd">
+		    			<label for="pwd">* 비밀번호: </label>
+			    		<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control form-join3" placeholder="특수문자/대소문자 표기">
+			    	</div>
+			    	<div class="form-group-passowrd-confirm" id="pwd-conf">
+		    			<label for="pwd-conf" >* 비밀번호 확인: </label>
+			    		<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control form-join3"  placeholder="특수문자/대소문자 표기">
+		    		</div>
+		    		<div id="button-pwd">
+		    			<br>
+		    			<button type="button" class="btn btn-default" id="btn-password" >비밀번호 확인</button>
+		    		</div>
+	    		</div>
+	    		<br>
+	    		<div id="email">
+	    		<label for="email">* 이메일: </label>
+	    		<div class="input-group">
+    				<span class="input-group-addon" ><i class="glyphicon glyphicon-user"></i></span>
+    				<input  type="text" class="form-control" placeholder="Email">
   				</div>
+  				</div>
+  				<br>
+  				<label for="sex">* 성별: </label>
+  				<div>
+  					<div class="radio">
+  						<label id="radio"><input type="radio" name="optradio" value="남" >남</label>
+  						<label><input type="radio" name="optradio" value="여">여</label>
+					</div>
+  				</div>
+  				<br>
+  				<div>
+  					<label for="bdate">* 생년월일: </label>
+	  				<div class="form-group-bdate">
+						<input type="date" class="form-control form-join" name="bday">
+						<!-- <input type="submit" class="btn btn-default" class="form-control"> -->
+					</div>
+				</div>
+  				<br>
+  				<div>
+  					<label for="address">* 주소: </label>
+  					<input type="text" class="form-control" id="address" placeholder="주소를 입력하시오">
+  				</div>
+  				<br>
+  				<label for="phone">* 전화번호: </label>
+  				<div class="form-group">
+                    <div>
+	                    <div class="pnum">
+	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="3" maxlength="3" required="required" title="">
+	                    </div>
+	                    <p class="pnum2">- </p>
+	                    <div class="pnum">
+	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="4" maxlength="4" required="required" title="">
+	                    </div>
+	                    <p class="pnum2"> - </p>
+	                     <div class="pnum">
+	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="4" maxlength="4" required="required" title="">
+	                     </div>
+                     </div>
+                </div>
+                <br>
+                <div id="photo">
+               		<label for="photo">* 사진: </label>
+		  			<input type="file" class="btn btn-default form-join" id="uploadfile" placeholder = "파일이름은 영문만 가능합니다."/>
+	  			</div>
 			</form>
         </div>
         <div class="modal-footer">
