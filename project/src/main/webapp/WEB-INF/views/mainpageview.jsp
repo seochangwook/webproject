@@ -18,13 +18,37 @@ $(document).ready(function(){
 });
 		$(function(){
 			//click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
-			$('#btn_click').click(function(){
+			$('#btn__info_click').click(function(){
 				alert('선택');
 				
 				var html_str = "<p>소개관련 뷰</p>";
 				
 				$('#contentview').empty();
 				$('#contentview').append(html_str);
+			});
+			$('#btn__enrolllist_click').click(function(){
+				alert('선택');
+				
+				var html_str = "<p>수강신청 관련 뷰</p>";
+				
+				$('#contentview').empty();
+				$('#contentview').append(html_str);
+			});
+			$('#btn__myenrolllist_click').click(function(){
+				alert('선택');
+			
+				var html_str = "<p>나의 수강과목 리스트 관련 뷰</p>";
+				
+				$('#contentview').empty();
+				$('#contentview').append(html_str);
+				
+				var trans_objeect = 
+			    {
+			        'name': pid,
+			        'id': 1 //추후 전송할 id값은 암호화 필요(중요데이터)//
+			    }
+				
+				var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
 			});
 			$('#info_sub1').click(function(){
 				alert('선택');
@@ -114,12 +138,9 @@ function sessionCheck(){
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#" id="btn_home">Home</a></li>
-        <li><a href="#" id="btn_click">소개</a></li>
-        <li><a href="#">과목검색</a></li>
-        <li><a href="#">과목신청</a></li>
-        <li><a href="#">과목취소</a></li>
-        <li><a href="#">메모하기</a></li>
-        <li><a href="#">학과 공지사항</a></li>
+        <li><a href="#" id="btn__info_click">소개</a></li>
+        <li><a href="#" id="btn__enrolllist_click">수강신청</a></li>
+        <li><a href="#" id="btn__myenrolllist_click">내 수강정보 확인</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#" id="btn_logout"><span class="glyphicon glyphicon-log-in"></span>&nbsp로그아웃</a></li>
@@ -137,9 +158,15 @@ function sessionCheck(){
   			<h4 id="title"><b>서창욱(${sessionId})</b></h4> 
   			<input type="hidden" id="sessionid" value='${sessionId}'>
   			<div>
-    			<p id="info1">나이 : 26살</p> 
-    			<p id="info1">학과 : ${major}</p>
-    			<p id="info1">학년 : ${year}</p>
+    			<p id="#info1">나이 : ${age}</p> 
+    			<p id="#info1">학과 : ${major}</p>
+    			<p id="#info1">학년 : ${year}</p>
+    			<p id="#info1">생일 : ${birth}</p>
+    			<p id="#info1">성별 : ${gender}</p>
+    			<p id="#info1">주소 : ${address}</p>
+    			<p id="#info1">이메일 : ${email}</p>
+    			<p id="#info1">전화번호 : ${phonenumber}</p>
+    			<p id="#info1">학번 : ${stunumber}</p>
     		</div>
     		<div>
     			<button type="button" class="btn btn-info" id="btn_myinfo_update">내 정보 수정</button>

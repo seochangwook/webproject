@@ -1,6 +1,7 @@
 package com.lotte.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.lotte.dto.IdSearchDTO;
 import com.lotte.dto.LoginDTO;
 import com.lotte.dto.PasswordSearchDTO;
+import com.lotte.log.Log;
 import com.lotte.service.IdSearchService;
 import com.lotte.service.LoginService;
 import com.lotte.service.PasswordSearchService;
@@ -42,6 +44,8 @@ import com.lotte.service.PasswordSearchService;
 @Controller
 @SessionAttributes("sessionId") //id라는 키로 저장된 attribute는 세션객체에 저장 됨
 public class AjaxController {	
+	Log log = null;
+	
 	@RequestMapping(value = "/loginajax", method = RequestMethod.POST, produces = {"application/json"})
 	public @ResponseBody Map<String, Object> login(@RequestBody final  LoginDTO loginInfo, Model view) { 
 		Map<String, Object> retVal = new HashMap<String, Object>();
@@ -57,6 +61,11 @@ public class AjaxController {
 		}
 		
 		System.out.println();		
+		
+		//로그작업//
+		log = new Log();
+		log.saveLog(loginInfo.getUserId() + " login");
+		
 		
 		retVal.put("check", ""+loginSucces);
 		return retVal;
@@ -78,6 +87,10 @@ public class AjaxController {
 			is_insert_success = true;
 		}
 		
+		//로그작업//
+		log = new Log();
+		log.saveLog(sessionid + " logout");
+		
 		return ""+is_insert_success;
 	}
 	
@@ -92,6 +105,10 @@ public class AjaxController {
 		searchId = IdSearchService.searchId(idsearchdto);
 		
 		retVal.put("id", searchId);
+		
+		//로그작업//
+		log = new Log();
+		log.saveLog(idsearchdto.getStuName() + " id search");
 		
 		return retVal;
 	}
@@ -153,6 +170,10 @@ public class AjaxController {
        
 		retVal.put("password", searchPassword);
 		retVal.put("authnumber", authnumber);
+		
+		//로그작업//
+		log = new Log();
+		log.saveLog(user + " password check");
 		
 		return retVal;
 	}
@@ -228,6 +249,10 @@ public class AjaxController {
 	   //넘어온 데이터를 가지고 DTO구성//
 	   
 		    
+	 //로그작업//
+	 log = new Log();
+	 log.saveLog(multi.getParameter("stuId") + " enroll");
+	 		
 		return retVal;
 	}
 }

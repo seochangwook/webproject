@@ -16,10 +16,17 @@ public class MainController {
 		
 		System.out.println("hidden id: " + stuId);
 		
+		//사용자 정보를 가져온다.//
 		view.addObject("userid", stuId);
-		view.addObject("major", "��ǻ�Ͱ��а�");
+		view.addObject("major", "컴퓨터공학과");
 		view.addObject("year", "4");
-		
+		view.addObject("age", 26);
+		view.addObject("birth", "92/04/06");
+		view.addObject("gender", "남");
+		view.addObject("address", "경기도 수원시 장안구 정자동");
+		view.addObject("email", "scw05313315@gmail.com");
+		view.addObject("phonenumber", "01042084757");
+		view.addObject("imagefile", "seopicture.png");
 		view.addObject("imagefile", "seopicture.png");
 		
 		view.setViewName("/mainpageview");
