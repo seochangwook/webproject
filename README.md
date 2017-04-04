@@ -3,7 +3,7 @@
 <p -- basic spec -- </p>
 <p>* IDE : Spring STS (ver.3.7.3)</p>
 <p>* DB : Oracle/sqlDeveloper </p>
-<p>* use tech: HTML, Javascript, Ajax, Css, Bootstrap, JDBC(MyBatis), MVC Pattern, JSTL</p>
+<p>* use tech: HTML, Javascript, Ajax, Css, Bootstrap, JDBC(MyBatis), MVC Pattern, JSTL, Java Mail(SMTP)</p>
 
 <p> -- ERD -- </p>
 
