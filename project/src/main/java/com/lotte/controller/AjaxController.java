@@ -1,9 +1,11 @@
 package com.lotte.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lotte.dto.IdSearchDTO;
 import com.lotte.dto.LoginDTO;
@@ -150,6 +154,80 @@ public class AjaxController {
 		retVal.put("password", searchPassword);
 		retVal.put("authnumber", authnumber);
 		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/enrollajax", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> enrollStudent(MultipartHttpServletRequest multi) {
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		
+		boolean is_check = true;
+		String photofilename = "default_people_img.PNG"; //만약 파일등록을 안할 시 디폴트 이미지 저장되도록 함.//
+		//파일은 오직 1개만 들어온다는 가정//
+		System.out.println("------------------<<File Upload>>---------------------");
+
+		// 저장 경로 설정
+		String root = multi.getSession().getServletContext().getRealPath("/");
+		String path = root+"resources\\images\\uploading\\";
+		
+		System.out.println("save file path : " + path);
+		File file = new File(".");
+		file.getAbsoluteFile();
+		String newFileName = file.getAbsoluteFile() + ""; // 업로드 되는 파일명
+		         System.out.println(newFileName);
+		File dir = new File(path);
+		
+		if(!dir.isDirectory()){
+			dir.mkdir();
+		}
+		       
+		//전송된 파일들(getFileNames)을 불러오기 위한 반복자(Formdata 탐색)//
+		Iterator<String> files = multi.getFileNames();
+		
+		while(files.hasNext()){
+			String uploadFile = files.next();
+		                         
+		    MultipartFile mFile = multi.getFile(uploadFile);
+		    
+		    String fileName_original = mFile.getOriginalFilename();
+		    //현재 프로젝트(서버)의 resources 경로//
+		    String file_save_path = "/Users/macbook/git/webproject/project/src/main/webapp/resources/images/uploading/";
+		             
+		    try {
+		    	mFile.transferTo(new File(file_save_path+fileName_original));
+		    	photofilename = fileName_original;
+		    	System.out.println("실제 전송된 파일 이름 : " +fileName_original);
+			    System.out.println("파일 이름: " + newFileName);
+			    System.out.println("전송된 파일 사이즈: " + mFile.getSize());
+				
+				System.out.println("------------------------------------------------------");
+				         
+		    	retVal.put("check", ""+is_check);
+		    } catch (Exception e) {
+		    	is_check = false;
+		    	retVal.put("check", ""+is_check);
+		    	e.printStackTrace();
+		    }
+		}
+		
+		//파일 이외의 text데이터//
+	   System.out.println("id: " + multi.getParameter("stuId"));
+	   System.out.println("password: " + multi.getParameter("stuPassword"));
+	   System.out.println("name: " + multi.getParameter("stuName"));
+	   System.out.println("birth: " + multi.getParameter("stuBirth"));
+	   System.out.println("gender: " + multi.getParameter("stuGender"));
+	   System.out.println("number: " + multi.getParameter("stuNumber"));
+	   System.out.println("address: " + multi.getParameter("stuAddress"));
+	   System.out.println("deptno: " + multi.getParameter("deptNo"));
+	   System.out.println("grade: " + multi.getParameter("stuGrade"));
+	   System.out.println("email: " + multi.getParameter("stuEmail"));
+	   System.out.println("phonenumber: " + multi.getParameter("stuPhoneNumber"));
+	   System.out.println("photofilename: " + photofilename);
+	   
+	   //넘어온 데이터를 가지고 DTO구성//
+	   
+		    
 		return retVal;
 	}
 }

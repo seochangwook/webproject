@@ -15,6 +15,7 @@
 <script src="resources/js/secure/rollups/aes.js"></script>
 
 <script type="text/javascript">
+//파일 업로드 관련 부분 ajax//
 		$(function(){
 			//click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
 			$('#btn_login').click(function(){
@@ -68,13 +69,12 @@
 								//submit을 만들어준다.//
 								print_str += "<form name='TransTest' id='tForm' method='post' action='http://localhost:8080/project/mainpage'>";
 								//hidden필드를 이용해서 전달할 값을 설정//
-
 								print_str += "<input type='hidden' name='country' value='"+input_id+"'>";
 								print_str += "<div id='btn_group3'>";
 								print_str += "<input type='hidden' name='stuId' value='"+input_id+"'>";
 								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지 이동</button>";
 								print_str += "</form>";
-								print_str += "<button name='subject2' class='btn btn-login' id='btn_go' value='move'>기타 페이지 이동</button></div>";
+								print_str += "<input type=button name='subject2' class='btn btn-login' id='btn_go' onclick='pagemove()' value='롯데대학교 홈페이지'></div>";
 	
 								$('#btn_group').append(print_str); //설정한 내용들을 다시 뷰에 보여줌//
 							}
@@ -96,94 +96,104 @@
 				}
 			});
 			$('[data-toggle="tooltip"]').tooltip(); 
+			//파일선택 시 발생하는 이벤트 처리(전송할 파일 목록에 등록)//
+			var files = []; //파일이 저장될 배열//
+			$('#uploadfile').change(function(event){
+				alert('선택된 파일: ['+event.target.files[0].name+']');
+				
+				files=event.target.files;
+			});
+			
+			$('#enrollbutton').click(function(){
+				var id_value = $('#usrId').val();
+				var pwd_value = $('#usrpawd').val();
+				var name_value = $('#name').val();
+				
+				//비밀번호 암호화//
+				var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
+				var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
+				var encrypted_password = CryptoJS.AES.encrypt(pwd_value, key, { iv: iv });
+				
+				var stunumber = $('#stunum').val();
+				var departtag = document.getElementById("sel1");
+				var departmentname = departtag.options[departtag.selectedIndex].value;
+				var departmentnumber = -1;
+				if(departmentname == '컴퓨터공학과'){
+					departmentnumber = 1;
+				}
+				var email_value = $('#emailtext').val();
+				var gender_value = $('input[type=radio][name=optradio]:checked').val(); //라디오 버튼 선택값 가져오기//
+				var address_value = $('#address').val();
+				//select태그로 선택된 값 가져오기//
+				var birthday = $('#birthdayid').val();
+				var phonenumber = $('#telnumber1').val() + $('#telnumber2').val() + $('#telnumber3').val();
+				
+				if(files[0] == null){
+					alert('반드시 파일을 1개이상 선택하세요!!');
+				}
+				
+				//ajax call을 통한 서버저장//
+				if(id_value == '' || pwd_value == ''){
+					alert('아이디 또는 비밀번호를 입력하세요.');
+					
+					var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
+					
+					//다시 다이얼로그를 나타낸다.//
+					$('#myModal').empty();
+					$('#myModal').append(htmltext); 
+				}
+				
+				else{
+					alert("회원등록");
+					
+					//파일 전송을 위한 From데이터를 만든다.//
+					//File등의 타입을 받을 수 있는 폼 클래스 선언//
+					var formData = new FormData();
+					
+					//key-value값으로 설정//
+					formData.append("stuId", id_value);
+					formData.append("stuName", name_value);
+					formData.append("stuPassword", encrypted_password);
+					formData.append("stuBirth", birthday);
+					formData.append("stuGender", gender_value);
+					formData.append("stuNumber", stunumber);
+					formData.append("stuAddress", address_value);
+					formData.append("deptNo",departmentnumber);
+					formData.append("stuGrade", 4);
+					formData.append("stuEmail", email_value);
+					formData.append("stuPhoneNumber", phonenumber);
+					formData.append("stuPhoto", files[0]);
+					
+					$.ajax({
+						type : 'POST',
+	            		url : 'http://localhost:8080/project/enrollajax',
+	            		data : formData,
+	            		//파일 전송 시 processData, contentType을 null로 설정//
+	           		 	processData : false,
+	            		contentType : false,
+	            		success : function(retVal) {
+	            			var is_check = retVal.check;
+	            			
+	            			if(is_check == 'true'){
+	            				alert('회원가입 성공!!');
+	            			}
+	            			
+	            			else if(is_check == 'false'){
+	            				alert('회원가입 실패 (정보를 정확히 입력하세요)');
+	            			}
+	            		},
+	            		error : function(retVal, status, er) {
+	            			alert("error: "+retVal+" status: "+status+" er:"+er);
+	            		}
+					});
+				}
+			});
 		});
 		
-		//Modal Dialog 이벤트//
-		function modalview(){
-			var id_value = $('#id').val();
-			var pwd_value = $('#pwd').val();
-			
-			//비밀번호 암호화//
-			var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
-			var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
-			var encrypted_password = CryptoJS.AES.encrypt(pwd_value, key, { iv: iv });
-			
-			var email_value = $('#email').val();
-			var sex_value = $('input[type=radio][name=optradio]:checked').val(); //라디오 버튼 선택값 가져오기//
-			var like_values = []; //배열로 체크된 값들을 가져올 저장소 생성//
-			//체크박스의 선택된 값은 each()을 이용해서 배열 형태로 반환//
-			$('input[name=chklist]:checked').each(function(){
-				like_values.push($(this).val());
-			});
-			var address_value = $('#adress').val();
-			//select태그로 선택된 값 가져오기//
-			var jobtag = document.getElementById("sel1");
-			var job_value = jobtag.options[jobtag.selectedIndex].value;
-			var introcomment = $('#comment').val();
-			
-			//alert(id_value+'/'+pwd_value+'/'+email_value+'/'+sex_value+'/'+like_values+'/'+address_value+'/'+job_value+'/'+introcomment);
-			
-			//ajax call을 통한 서버저장//
-			if(id_value == '' || pwd_value == ''){
-				alert('아이디 또는 비밀번호를 입력하세요.');
-				
-				var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
-				
-				//다시 다이얼로그를 나타낸다.//
-				$('#myModal').empty();
-				$('#myModal').append(htmltext); 
-			}
-			
-			else{
-				var trans_objeect = 
-			    {
-			        'userId':id_value,
-			        'userPassword':''+encrypted_password,
-			        'userEmail':email_value,
-			        'userSex':sex_value,
-			        'userLikes':like_values,
-			        'userAddress':address_value,
-			        'userJob':job_value,
-			        'userIntro':introcomment
-			    }
-				
-				var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
-				
-				$.ajax({
-					url: "http://localhost:8080/testspring/enrollajax",
-					type: 'POST',
-					dataType: 'json',
-					data: trans_json,
-					contentType: 'application/json',
-					mimeType: 'application/json',
-					success: function(retVal){
-						var is_check = retVal.ischeck;
-						
-						if(is_check == "true"){
-							alert(id_value+" 유저 등록성공!!");
-							
-							var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
-							
-							//다시 다이얼로그를 나타낸다.//
-							$('#myModal').empty();
-							$('#myModal').append(htmltext); 
-						}
-						
-						else{
-							alert("이미 존재하는 아이디입니다.");
-							
-							var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
-							
-							//다시 다이얼로그를 나타낸다.//
-							$('#myModal').empty();
-							$('#myModal').append(htmltext); 
-						}
-					},
-					error: function(retVal, status, er){
-						alert("error: "+data+" status: "+status+" er:"+er);
-					}
-				});
-			}
+		//페이지 이동(리다이렉션)//
+		function pagemove(){
+			var url = "http://job.lotte.co.kr/LotteRecruit/";
+			$(location).attr("href", url);
 		}
 		
 		//Modal Dialog 이벤트//
@@ -259,11 +269,6 @@
 						
 							$('#stuemail').val('');
 							$('#stuidinput_p').val('');
-							
-							$('#stuemail').attr("readonly", false);
-							$('#stuidinput_p').attr("readonly", false);
-							$('#btn_mailsend').attr("disabled", false);
-							$('#searchbuttonp').attr("disabled", true);
 						}
 						
 						else{
@@ -355,7 +360,7 @@
 		    		</div>
 		    		<div id="form-group-student-number" size="10">
 		    			<label for="num">* 학번: </label>
-						<input type="text" class="form-control form-join" id="num">
+						<input type="text" class="form-control form-join" id="stunum">
 		    		</div>
 	    		</div>
   				<div id="dept">
@@ -397,11 +402,11 @@
 	    		<div>
 		    		<div class="form-group-passowrd" id="pwd">
 		    			<label for="pwd">* 비밀번호: </label>
-			    		<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control form-join3" placeholder="특수문자/대소문자 표기">
+			    		<input type="password" data-toggle="tooltip" id="usrpawd" title="비밀번호 입력" class="form-control form-join3" placeholder="특수문자/대소문자 표기">
 			    	</div>
 			    	<div class="form-group-passowrd-confirm" id="pwd-conf">
 		    			<label for="pwd-conf" >* 비밀번호 확인: </label>
-			    		<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control form-join3"  placeholder="특수문자/대소문자 표기">
+			    		<input type="password" data-toggle="tooltip" id="usrpawdcheck" title="비밀번호 입력" class="form-control form-join3"  placeholder="특수문자/대소문자 표기">
 		    		</div>
 		    		<div id="button-pwd">
 		    			<br>
@@ -413,7 +418,7 @@
 	    		<label for="email">* 이메일: </label>
 	    		<div class="input-group">
     				<span class="input-group-addon" ><i class="glyphicon glyphicon-user"></i></span>
-    				<input  type="text" class="form-control" placeholder="Email">
+    				<input  type="text" class="form-control" id="emailtext" placeholder="Email">
   				</div>
   				</div>
   				<br>
@@ -428,7 +433,7 @@
   				<div>
   					<label for="bdate">* 생년월일: </label>
 	  				<div class="form-group-bdate">
-						<input type="date" class="form-control form-join" name="bday">
+						<input type="date" class="form-control form-join" name="bday" id="birthdayid">
 						<!-- <input type="submit" class="btn btn-default" class="form-control"> -->
 					</div>
 				</div>
@@ -442,15 +447,15 @@
   				<div class="form-group">
                     <div>
 	                    <div class="pnum">
-	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="3" maxlength="3" required="required" title="">
+	                        <input type="tel" name="phone" class="form-control form-join2" id="telnumber1" value="" size="3" maxlength="3" required="required" title="">
 	                    </div>
 	                    <p class="pnum2">- </p>
 	                    <div class="pnum">
-	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="4" maxlength="4" required="required" title="">
+	                        <input type="tel" name="phone" class="form-control form-join2" id="telnumber2" value="" size="4" maxlength="4" required="required" title="">
 	                    </div>
 	                    <p class="pnum2"> - </p>
 	                     <div class="pnum">
-	                        <input type="tel" name="phone" class="form-control form-join2" value="" size="4" maxlength="4" required="required" title="">
+	                        <input type="tel" name="phone" class="form-control form-join2" id="telnumber3" value="" size="4" maxlength="4" required="required" title="">
 	                     </div>
                      </div>
                 </div>
@@ -463,7 +468,7 @@
         </div>
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-        	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton" onclick="modalview()">등록</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton"">등록</button>
         </div>
       </div>
     </div>

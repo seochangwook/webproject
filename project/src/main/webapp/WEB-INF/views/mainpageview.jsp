@@ -133,7 +133,7 @@ function sessionCheck(){
     <div class="col-sm-2 sidenav">
       	<h2>나의 정보</h2>
 		<div class="card">
-  			<img src="resources/images/uploadimg/${imagefile}" class="img-circle" alt="Cinque Terre" style="width:100%">
+  			<img src="resources/images/uploading/${imagefile}" class="img-circle" alt="Cinque Terre" style="width:100%">
   			<h4 id="title"><b>서창욱(${sessionId})</b></h4> 
   			<input type="hidden" id="sessionid" value='${sessionId}'>
   			<div>
