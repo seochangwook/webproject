@@ -7,9 +7,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.stereotype.Repository;
 
 import com.lotte.dto.IdSearchDTO;
-
+@Repository
 public class IdSearchDao {
 	private String res = "/mybatis-config.xml";
 	private String namespace = "procedurestu";

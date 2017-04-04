@@ -152,24 +152,4 @@ public class AjaxController {
 		
 		return retVal;
 	}
-	
-	class MyAuthentication extends Authenticator
-    {
-        PasswordAuthentication pa; //인증 클래스 선언.//
-
-        public MyAuthentication()
-        {
-            String id = "scw0531";// 구글 ID
-            String pw = "tjckd246!dnr";// 구글 비밀번호(2단계 적용)//
-
-            // ID와 비밀번호를 입력한다.
-            pa = new PasswordAuthentication(id, pw);
-        }
-
-        // 시스템에서 사용하는 인증정보
-        public PasswordAuthentication getPasswordAuthentication()
-        {
-            return pa; //인증정보를 반환.//
-        }
-    }
 }
