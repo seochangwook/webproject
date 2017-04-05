@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.util.lotte.FileUtil;
 
 public class Log {
-	static File path = new File("src\\main\\resources\\log.txt");
-	public static final String SCHEDULE_FILE_LOCATION = path.getAbsolutePath();	
+	//파일경로 가져오기	
+    String path = this.getClass().getResource("/").getPath();  
+    String configFilePath = path.substring( 0, path.lastIndexOf("classes")).replaceAll("%20", " ");
+    public final String SCHEDULE_FILE_LOCATION = configFilePath + "/classes/log.txt";
 	
 	/** Log data setting **/
 	public static String getCurrentDate()
