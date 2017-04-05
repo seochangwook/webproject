@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/loginviewcss.css" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
-
+<link rel="stylesheet" href="resources/css/progressbarcss.css" type="text/css"/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -50,6 +50,12 @@
 						data: trans_json,
 						contentType: 'application/json',
 						mimeType: 'application/json',
+						beforeSend:function(){
+				              $('.wrap-loading').removeClass('display-none');
+				          },
+				          complete:function(){
+				              $('.wrap-loading').addClass('display-none');
+				          },
 						success: function(retVal){
 							var is_check = retVal.check;
 				
@@ -119,6 +125,12 @@
 						data: trans_json,
 						contentType: 'application/json',
 						mimeType: 'application/json',
+						beforeSend:function(){
+				              $('.wrap-loading').removeClass('display-none');
+				          },
+				          complete:function(){
+				              $('.wrap-loading').addClass('display-none');
+				          },
 						success: function(retVal){
 							if(retVal.userNotExist){
 								alert(usrId+" 환영합니다.");
@@ -227,6 +239,12 @@
 	            		//파일 전송 시 processData, contentType을 null로 설정//
 	           		 	processData : false,
 	            		contentType : false,
+	            		beforeSend:function(){
+	                        $('.wrap-loading').removeClass('display-none');
+	                    },
+	                    complete:function(){
+	                        $('.wrap-loading').addClass('display-none');
+	                    },
 	            		success : function(retVal) {
 	            			alert(retVal.enrollSuccess);
 	            			if(retVal.enrollSuccess){
@@ -274,6 +292,12 @@
 					data: trans_json,
 					contentType: 'application/json',
 					mimeType: 'application/json',
+					beforeSend:function(){
+			              $('.wrap-loading').removeClass('display-none');
+			          },
+			          complete:function(){
+			              $('.wrap-loading').addClass('display-none');
+			          },
 					success: function(retVal){
 						var searchid = retVal.id;
 						
@@ -317,6 +341,12 @@
 					data: trans_json,
 					contentType: 'application/json',
 					mimeType: 'application/json',
+					beforeSend:function(){
+			              $('.wrap-loading').removeClass('display-none');
+			          },
+			          complete:function(){
+			              $('.wrap-loading').addClass('display-none');
+			          },
 					success: function(retVal){
 						var searchpassword = retVal.password;
 						var authnumber = retVal.authnumber;
@@ -527,7 +557,6 @@
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         	<button type="button" class="btn btn-primary" id="enrollbutton">등록</button>
-        	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton">등록</button>
         </div>
       </div>
     </div>
@@ -604,5 +633,8 @@
       </div>
     </div>
   </div>
+<div class="wrap-loading display-none">
+    <div><img src="resources/images/ajax-loader.gif" /></div>
+</div> 
 </body>
 </html>

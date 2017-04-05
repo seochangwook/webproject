@@ -14,11 +14,12 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/mainpageviewcss.css" type="text/css"/>
+<link rel="stylesheet" href="resources/css/progressbarcss.css" type="text/css"/>
 
 
 <script type="text/javascript">
 $(document).ready(function(){
-   sessionCheck(); //세션검사//
+   	sessionCheck(); //세션검사//
    $('#contentview').load('${pageContext.request.contextPath}/view.jsp'); //홈화면
 });
 function memoview(memostr){
@@ -43,6 +44,56 @@ function deletecourse(coursenumber){
    //다이얼로그 호출//
    $("#deletecou").modal('show');
 }
+function sidebarrefresh(){
+	var stunumber = $('#stunum').val();
+	   
+	   //ajax call//
+	   var trans_objeect = 
+	   {
+	       'stuNumber':stunumber,
+	    }
+	   
+	   var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+	   
+	   $.ajax({
+	      url: "http://localhost:8080/project/myenrolllistajax",
+	      type: 'POST',
+	      dataType: 'json',
+	      data: trans_json,
+	      contentType: 'application/json',
+	      mimeType: 'application/json',
+	      beforeSend:function(){
+              $('.wrap-loading').removeClass('display-none');
+          },
+          complete:function(){
+              $('.wrap-loading').addClass('display-none');
+          },
+	      success: function(retVal){
+	         var checkVal = retVal.check;   
+	         //테이블을 뿌려준다.//
+	         var user_array = [];
+	         //배열적용(ajax컨트롤러에서 HashMap으로 저장한 값을 불러온다.)//
+	         user_array = retVal.list;
+	         var row_count = user_array.length;
+	         var printStr = '';
+	          
+	          $('#subjectlist').empty();
+	          
+	          printStr += "<p>나의 수강과목 정보</p>";
+	          
+	          $.each(user_array, function(index,value) {
+	        	  printStr += "<div class='well'>";     
+	        	  printStr += "<p id='info_sub1'>" + value.c_name + " "+ value.c_date_time +"</p>";
+	        	  printStr += "</div>";
+	          });  
+	          
+	          $('#subjectlist').append(printStr);
+	      },
+	      error: function(retVal, status, er){
+	         alert("error: "+retVal+" status: "+status+" er:"+er);
+	      }
+	   });
+}
 function refreshcall(){
    var stunumber = $('#stunum').val();
    
@@ -61,6 +112,12 @@ function refreshcall(){
       data: trans_json,
       contentType: 'application/json',
       mimeType: 'application/json',
+      beforeSend:function(){
+          $('.wrap-loading').removeClass('display-none');
+      },
+      complete:function(){
+          $('.wrap-loading').addClass('display-none');
+      },
       success: function(retVal){
          var checkVal = retVal.check;   
          //테이블을 뿌려준다.//
@@ -133,6 +190,8 @@ function refreshcall(){
             print_str += "</div>";
             
             $('#contentview').append(print_str);
+            
+            sidebarrefresh();
       },
       error: function(retVal, status, er){
          alert("error: "+retVal+" status: "+status+" er:"+er);
@@ -163,12 +222,19 @@ function modalview_memowrite(){
       data: trans_json,
       contentType: 'application/json',
       mimeType: 'application/json',
+      beforeSend:function(){
+          $('.wrap-loading').removeClass('display-none');
+      },
+      complete:function(){
+          $('.wrap-loading').addClass('display-none');
+      },
       success: function(retVal){
          if(retVal.check == 'true'){
             alert('메모등록  및 변경 성공');
             
             //location.reload();
             refreshcall(); //해당 테이블을 다시 호출한다.//
+            sidebarrefresh();
          }
          
          else{
@@ -176,6 +242,7 @@ function modalview_memowrite(){
             
             //location.reload();
             refreshcall();
+            sidebarrefresh();
          }
       },
       error: function(retVal, status, er){
@@ -204,6 +271,12 @@ function modalview_deletecourse(){
       data: trans_json,
       contentType: 'application/json',
       mimeType: 'application/json',
+      beforeSend:function(){
+          $('.wrap-loading').removeClass('display-none');
+      },
+      complete:function(){
+          $('.wrap-loading').addClass('display-none');
+      },
       success: function(retVal){
          var check = retVal.check;
          
@@ -211,12 +284,14 @@ function modalview_deletecourse(){
             alert('과목 삭제 성공');
             
             refreshcall();
+            sidebarrefresh();
          }
          
          else if(check == 'false'){
             alert('과목 삭제 실패');   
             
             refreshcall();
+            sidebarrefresh();
          }
       },
       error: function(retVal, status, er){
@@ -232,50 +307,6 @@ function sessionCheck(){
    
       var url = "http://localhost:8080/project/login";
       $(location).attr("href", url);
-}
-function sidebarrefresh(){
-	var stunumber = $('#stunum').val();
-	   
-	   //ajax call//
-	   var trans_objeect = 
-	   {
-	       'stuNumber':stunumber,
-	    }
-	   
-	   var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
-	   
-	   $.ajax({
-	      url: "http://localhost:8080/project/myenrolllistajax",
-	      type: 'POST',
-	      dataType: 'json',
-	      data: trans_json,
-	      contentType: 'application/json',
-	      mimeType: 'application/json',
-	      success: function(retVal){
-	         var checkVal = retVal.check;   
-	         //테이블을 뿌려준다.//
-	         var user_array = [];
-	         //배열적용(ajax컨트롤러에서 HashMap으로 저장한 값을 불러온다.)//
-	         user_array = retVal.list;
-	         var row_count = user_array.length;
-	         var printStr = '';
-	          
-	          $('#subjectlist').empty();
-	          
-	          printStr += "<p>나의 수강과목 정보</p>";
-	          
-	          $.each(user_array, function(index,value) {
-	        	  printStr += "<div class='well'>";     
-	        	  printStr += "<p id='info_sub1'>" + value.c_name + " "+ value.c_date_time +"</p>";
-	        	  printStr += "</div>";
-	          });  
-	          
-	          $('#subjectlist').append(printStr);
-	      },
-	      error: function(retVal, status, er){
-	         alert("error: "+retVal+" status: "+status+" er:"+er);
-	      }
-	   });
 }
       $(function(){
          //click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
@@ -313,6 +344,12 @@ function sidebarrefresh(){
                data: trans_json,
                contentType: 'application/json',
                mimeType: 'application/json',
+               beforeSend:function(){
+                   $('.wrap-loading').removeClass('display-none');
+               },
+               complete:function(){
+                   $('.wrap-loading').addClass('display-none');
+               },
                success: function(retVal){
                   var checkVal = retVal.check;   
                   //테이블을 뿌려준다.//
@@ -385,6 +422,8 @@ function sidebarrefresh(){
                       print_str += "</div>";
                       
                       $('#contentview').append(print_str);
+                      
+                      sidebarrefresh();
                },
                error: function(retVal, status, er){
                   alert("error: "+retVal+" status: "+status+" er:"+er);
@@ -436,6 +475,12 @@ function sidebarrefresh(){
                type: 'POST',
                dataType: 'text',
                data: sessionid,
+               beforeSend:function(){
+                   $('.wrap-loading').removeClass('display-none');
+               },
+               complete:function(){
+                   $('.wrap-loading').addClass('display-none');
+               },
                success: function(retVal){
                   var is_check = retVal;
                
@@ -575,6 +620,10 @@ function sidebarrefresh(){
       </div>
     </div>
   </div>
+  
+<div class="wrap-loading display-none">
+    <div><img src="resources/images/ajax-loader.gif" /></div>
+</div> 
   
   <!-- Modal -->
   <div class="modal fade" id="memowrite" role="dialog">
