@@ -1,5 +1,6 @@
 package com.lotte.log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
@@ -7,7 +8,8 @@ import java.util.Calendar;
 import com.util.lotte.FileUtil;
 
 public class Log {
-	public static final String SCHEDULE_FILE_LOCATION = "/Users/macbook/git/webproject/project/src/main/resources/log.txt";
+	static File path = new File("src\\main\\resources\\log.txt");
+	public static final String SCHEDULE_FILE_LOCATION = path.getAbsolutePath();	
 	
 	/** Log data setting **/
 	public static String getCurrentDate()
