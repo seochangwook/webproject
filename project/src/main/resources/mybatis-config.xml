@@ -18,5 +18,7 @@
 	<mappers>
 		<!-- sql service add mapper tag -->
 		<mapper resource="mapper/procedureStudent.xml"/>
+		<mapper resource="mapper/procedureCourse.xml"/>
+		<mapper resource="mapper/myenrolllist.xml"/>
 	</mappers>
 </configuration>

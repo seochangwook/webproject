@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="procedurecourse">	
+	<resultMap type="hashmap" id="p_courseauth"></resultMap>
+	<select id="p_courseauth" statementType="CALLABLE">
+	{
+		CALL PRO_COURSE_MANAGE(
+			<!-- Procedure의 변수 -->
+			#{in_pro_type},
+			#{in_stu_number},
+			#{in_c_number},
+			#{in_c_memo},
+			#{out_result, mode=OUT, jdbcType=INTEGER, javaType=Integer, resultMap=p_courseauth}
+		)
+	}
+	</select>
+</mapper>

@@ -23,4 +23,9 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
+	<!-- MultipartFile 관련 beans Resolver -->
+	<bean 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<property name="defaultEncoding" value="UTF-8" /> <!-- 인코딩-->
+	</bean>
 </beans>
