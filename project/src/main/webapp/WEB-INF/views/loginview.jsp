@@ -95,6 +95,45 @@
 					});
 				}
 			});
+			
+			$('#confirm').click(function(){
+				var usrId = $('#usrId').val();
+				
+				if(usrId == ''){
+					alert('아이디를 입력하시오.');
+				}
+				else{
+					//ajax call//
+					var trans_objeect = 
+			    	{
+			        	'id':usrId
+				    }
+					var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+					
+					$.ajax({
+						url: "http://localhost:8080/project/confirmidajax",
+						type: 'POST',
+						dataType: 'json',
+						data: trans_json,
+						contentType: 'application/json',
+						mimeType: 'application/json',
+						success: function(retVal){
+							if(retVal.userNotExist){
+								alert(usrId+" 환영합니다.");
+								$('#hdnUserNotExist').val('true');
+							}
+							else{
+								alert("동일한 아이디가 존재합니다.");
+								$('#hdnUserNotExist').val('false');
+							}							
+						},
+						error: function(retVal, status, er){
+							alert("error: "+retVal+" status: "+status+" er:"+er);
+						}
+					});
+				}
+			});
+			
 			$('[data-toggle="tooltip"]').tooltip(); 
 			//파일선택 시 발생하는 이벤트 처리(전송할 파일 목록에 등록)//
 			var files = []; //파일이 저장될 배열//
@@ -104,9 +143,19 @@
 				files=event.target.files;
 			});
 			
-			$('#enrollbutton').click(function(){
+			$('#btn_enroll').click(function(){
+				$('#myModal').modal();
+				
+			})
+
+			$('.modal').on('hidden.bs.modal', function (e) {
+				  $(this).find('form')[0].reset()
+			});
+			
+			$('#enrollbutton').click(function(){				
 				var id_value = $('#usrId').val();
 				var pwd_value = $('#usrpawd').val();
+				var pwdCheck_value = $('#usrpawdcheck').val(); 
 				var name_value = $('#name').val();
 				
 				//비밀번호 암호화//
@@ -128,24 +177,29 @@
 				var birthday = $('#birthdayid').val();
 				var phonenumber = $('#telnumber1').val() + $('#telnumber2').val() + $('#telnumber3').val();
 				
-				if(files[0] == null){
-					alert('반드시 파일을 1개이상 선택하세요!!');
-				}
-				
-				//ajax call을 통한 서버저장//
+				var CheckEnrollEnable = false;
+					
 				if(id_value == '' || pwd_value == ''){
 					alert('아이디 또는 비밀번호를 입력하세요.');
-					
-					var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
-					
-					//다시 다이얼로그를 나타낸다.//
-					$('#myModal').empty();
-					$('#myModal').append(htmltext); 
+					CheckEnrollEnable = false
 				}
-				
+				else if($('#hdnUserNotExist').val() == "false" ){					
+					alert("ID 중복체크를 해야합니다.");	
+					CheckEnrollEnable = false
+				}				
+				//ajax call을 통한 서버저장//
+				else if(pwdCheck_value != pwd_value){
+					alert('비밀번호가 일치하지 않습니다.');
+					CheckEnrollEnable = false
+				}
+				else if(files[0] == null){
+					alert('반드시 파일을 1개이상 선택하세요!!');
+					CheckEnrollEnable = false
+				}		
 				else{
-					alert("회원등록");
-					
+					CheckEnrollEnable = true
+				}
+				if(CheckEnrollEnable){
 					//파일 전송을 위한 From데이터를 만든다.//
 					//File등의 타입을 받을 수 있는 폼 클래스 선언//
 					var formData = new FormData();
@@ -172,21 +226,22 @@
 	           		 	processData : false,
 	            		contentType : false,
 	            		success : function(retVal) {
-	            			var is_check = retVal.check;
-	            			
-	            			if(is_check == 'true'){
+	            			alert(retVal.enrollSuccess);
+	            			if(retVal.enrollSuccess){
 	            				alert('회원가입 성공!!');
+	            				$('#myModal').modal('show');
+	            				$('#myModal').modal('hide');
+	            				
 	            			}
-	            			
-	            			else if(is_check == 'false'){
+	            			else if(retVal.check){
 	            				alert('회원가입 실패 (정보를 정확히 입력하세요)');
 	            			}
 	            		},
 	            		error : function(retVal, status, er) {
 	            			alert("error: "+retVal+" status: "+status+" er:"+er);
 	            		}
-					});
-				}
+					});	
+				}			
 			});
 		});
 		
@@ -331,7 +386,7 @@
 		    </div>
 		    <div id="btn_group">
 		      	<button type="button" class="btn btn-lg btn-block btn-login" id="btn_login">로그인</button>
-		  	  	<button type="button" class="btn btn-lg btn-block btn-login" id="btn_enroll" data-toggle="modal" data-target="#myModal">회원가입</button>
+		  	  	<button type="button" class="btn btn-lg btn-block btn-login" id="btn_enroll">회원가입</button>
 		    </div>
 		    <div id="btn_group2">
 		    	<button type="button" class="btn btn-login " id="btn_search_id" data-toggle="modal" data-target="#myModal_idsearch">아이디 찾기</button>
@@ -395,7 +450,8 @@
 	  				<label for="usr">* 아이디: </label>
 					<div class="form-group-name" size="10">
 						<input type="text" class="form-control form-join" id="usrId">
-						<button type="button" class="btn btn-default" id="confirm" >중복확인</button>
+						<input type="hidden" id="hdnUserNotExist" value="false">
+						<button type="button" class="btn btn-default" id="confirm">중복확인</button>
 		    		</div>
 	    		</div>
 	    		<br>
@@ -468,7 +524,7 @@
         </div>
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-        	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton"">등록</button>
+        	<button type="button" class="btn btn-primary" id="enrollbutton">등록</button>
         </div>
       </div>
     </div>
