@@ -15,6 +15,7 @@ public class MainController {
 		ModelAndView view = new ModelAndView();
 		
 		System.out.println("hidden id: " + stuId);
+		System.out.println("hidden id: " + stuId);
 		
 		//�궗�슜�옄 �젙蹂대�� 媛��졇�삩�떎.//
 		view.addObject("userid", stuId);

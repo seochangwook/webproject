@@ -1,13 +1,18 @@
 package com.lotte.log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.util.lotte.FileUtil;
 
 public class Log {
-	public static final String SCHEDULE_FILE_LOCATION = "C:\\Users\\ROOM3_9\\git\\webproject\\project\\src\\main\\resources\\log.txt";
+    String path = this.getClass().getResource("/").getPath();  
+    String configFilePath = path.substring( 0, path.lastIndexOf("classes")).replaceAll("%20", " ");
+    public final String SCHEDULE_FILE_LOCATION = configFilePath + "/classes/log.txt";
 	
 	/** Log data setting **/
 	public static String getCurrentDate()
