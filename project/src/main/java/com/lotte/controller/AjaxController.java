@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -33,12 +34,19 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.lotte.dto.DeleteCourseDTO;
 import com.lotte.dto.IdSearchDTO;
 import com.lotte.dto.LoginDTO;
+import com.lotte.dto.MemoUpdateDTO;
+import com.lotte.dto.MyEnrollCourseDTO;
+import com.lotte.dto.MyEnrollSearchDTO;
 import com.lotte.dto.PasswordSearchDTO;
 import com.lotte.log.Log;
+import com.lotte.service.DeleteCourseService;
 import com.lotte.service.IdSearchService;
 import com.lotte.service.LoginService;
+import com.lotte.service.MemoUpdateService;
+import com.lotte.service.MyEnrollCourseSearchService;
 import com.lotte.service.PasswordSearchService;
 
 @Controller
@@ -213,7 +221,7 @@ public class AjaxController {
 		    
 		    String fileName_original = mFile.getOriginalFilename();
 		    //현재 프로젝트(서버)의 resources 경로//
-		    String file_save_path = "/Users/macbook/git/webproject/project/src/main/webapp/resources/images/uploading/";
+		    String file_save_path = "C:\\Users\\ROOM3_9\\git\\webproject\\project\\src\\main\\webapp\\resources\\images\\uploading";
 		             
 		    try {
 		    	mFile.transferTo(new File(file_save_path+fileName_original));
@@ -233,26 +241,75 @@ public class AjaxController {
 		}
 		
 		//파일 이외의 text데이터//
-	   System.out.println("id: " + multi.getParameter("stuId"));
-	   System.out.println("password: " + multi.getParameter("stuPassword"));
-	   System.out.println("name: " + multi.getParameter("stuName"));
-	   System.out.println("birth: " + multi.getParameter("stuBirth"));
-	   System.out.println("gender: " + multi.getParameter("stuGender"));
-	   System.out.println("number: " + multi.getParameter("stuNumber"));
-	   System.out.println("address: " + multi.getParameter("stuAddress"));
-	   System.out.println("deptno: " + multi.getParameter("deptNo"));
-	   System.out.println("grade: " + multi.getParameter("stuGrade"));
-	   System.out.println("email: " + multi.getParameter("stuEmail"));
-	   System.out.println("phonenumber: " + multi.getParameter("stuPhoneNumber"));
-	   System.out.println("photofilename: " + photofilename);
+		System.out.println("id: " + multi.getParameter("stuId"));
+		System.out.println("password: " + multi.getParameter("stuPassword"));
+		System.out.println("name: " + multi.getParameter("stuName"));
+		System.out.println("birth: " + multi.getParameter("stuBirth"));
+		System.out.println("gender: " + multi.getParameter("stuGender"));
+		System.out.println("number: " + multi.getParameter("stuNumber"));
+		System.out.println("address: " + multi.getParameter("stuAddress"));
+		System.out.println("deptno: " + multi.getParameter("deptNo"));
+		System.out.println("grade: " + multi.getParameter("stuGrade"));
+		System.out.println("email: " + multi.getParameter("stuEmail"));
+		System.out.println("phonenumber: " + multi.getParameter("stuPhoneNumber"));
+		System.out.println("photofilename: " + photofilename);
 	   
 	   //넘어온 데이터를 가지고 DTO구성//
 	   
 		    
-	 //로그작업//
-	 log = new Log();
-	 log.saveLog(multi.getParameter("stuId") + " enroll");
+	   //로그작업//
+	   log = new Log();
+	   log.saveLog(multi.getParameter("stuId") + " enroll");
 	 		
+	   return retVal;
+	}
+	
+	@RequestMapping(value = "/myenrolllistajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> myEnrollList(@RequestBody final MyEnrollSearchDTO myEnrollSearchdto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		
+		System.out.println(myEnrollSearchdto.getStuNumber()+" enroll list search");
+		
+		//나의 수강신청 리스트를 불러온다.//
+		List<MyEnrollCourseDTO> myenrollist = null;
+		
+		myenrollist = MyEnrollCourseSearchService.searchmyenrollcourse(myEnrollSearchdto);
+		
+		System.out.println("list size: " + myenrollist.size());
+		
+		retVal.put("list", myenrollist);
+		retVal.put("check", "ok");
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/memoupdateajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> memoWrite(@RequestBody final MemoUpdateDTO memoupdatedto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("memo update ajax call success...");
+		
+		//메모를 등록//
+		isCheck = MemoUpdateService.memoupdateservice(memoupdatedto);
+		
+		retVal.put("check", ""+isCheck);
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/deletecourseajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> deleteCourse(@RequestBody final DeleteCourseDTO deletecoursedto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("delete course ajax call success...");
+		
+		//과목제거 서비스 호출//
+		isCheck = DeleteCourseService.deletecourseservice(deletecoursedto);
+		
+		retVal.put("check", ""+isCheck);
+		
 		return retVal;
 	}
 }

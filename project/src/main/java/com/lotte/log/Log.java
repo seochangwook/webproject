@@ -7,7 +7,7 @@ import java.util.Calendar;
 import com.util.lotte.FileUtil;
 
 public class Log {
-	public static final String SCHEDULE_FILE_LOCATION = "/Users/macbook/git/webproject/project/src/main/resources/log.txt";
+	public static final String SCHEDULE_FILE_LOCATION = "C:\\Users\\ROOM3_9\\git\\webproject\\project\\src\\main\\resources\\log.txt";
 	
 	/** Log data setting **/
 	public static String getCurrentDate()

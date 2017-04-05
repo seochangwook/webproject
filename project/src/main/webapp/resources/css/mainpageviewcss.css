@@ -52,7 +52,47 @@ img {
 .container {
     padding: 200px 56px;
 }
-#info1{
+#info_age{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_dept{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_grade{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_birth{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_gender{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_address{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_email{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_phonenumber{
+	text-align : left;
+	margin-left : 5px;
+	margin-top : 10px;
+}
+#info_stunumber{
 	text-align : left;
 	margin-left : 5px;
 	margin-top : 10px;
