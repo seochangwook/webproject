@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/lotte/controller/AjaxController.java=UTF-8
 encoding//src/main/java/com/lotte/controller/LoginController.java=UTF-8
+encoding//src/main/java/com/lotte/controller/MainController.java=UTF-8
+encoding//src/main/java/com/lotte/dao/MyEnrollCourseSearchDao.java=UTF-8

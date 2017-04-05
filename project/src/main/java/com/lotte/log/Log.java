@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.util.lotte.FileUtil;
 
 public class Log {
-	//파일경로 가져오기	
     String path = this.getClass().getResource("/").getPath();  
     String configFilePath = path.substring( 0, path.lastIndexOf("classes")).replaceAll("%20", " ");
     public final String SCHEDULE_FILE_LOCATION = configFilePath + "/classes/log.txt";

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -34,14 +35,21 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lotte.dto.IdExistDTO;
+import com.lotte.dto.DeleteCourseDTO;
 import com.lotte.dto.IdSearchDTO;
 import com.lotte.dto.LoginDTO;
+import com.lotte.dto.MemoUpdateDTO;
+import com.lotte.dto.MyEnrollCourseDTO;
+import com.lotte.dto.MyEnrollSearchDTO;
 import com.lotte.dto.PasswordSearchDTO;
 import com.lotte.dto.StudentDTO;
 import com.lotte.log.Log;
 import com.lotte.service.EnrollService;
+import com.lotte.service.DeleteCourseService;
 import com.lotte.service.IdSearchService;
 import com.lotte.service.LoginService;
+import com.lotte.service.MemoUpdateService;
+import com.lotte.service.MyEnrollCourseSearchService;
 import com.lotte.service.PasswordSearchService;
 
 @Controller
@@ -212,18 +220,20 @@ public class AjaxController {
 		while (files.hasNext()) {
 			String uploadFile = files.next();
 
-			MultipartFile mFile = multi.getFile(uploadFile);
-
-			String fileName_original = mFile.getOriginalFilename();
-			// 현재 프로젝트(서버)의 resources 경로//
-			String file_save_path = "/Users/macbook/git/webproject/project/src/main/webapp/resources/images/uploading/";
-
-			try {
-				mFile.transferTo(new File(file_save_path + fileName_original));
-				photofilename = fileName_original;
-				System.out.println("실제 전송된 파일 이름 : " + fileName_original);
-				System.out.println("파일 이름: " + newFileName);
-				System.out.println("전송된 파일 사이즈: " + mFile.getSize());
+		                         
+		    MultipartFile mFile = multi.getFile(uploadFile);
+		    
+		    String fileName_original = mFile.getOriginalFilename();
+		    //현재 프로젝트(서버)의 resources 경로//
+		    String file_save_path = "C:\\Users\\ROOM3_9\\git\\webproject\\project\\src\\main\\webapp\\resources\\images\\uploading";
+		             
+		    try {
+		    	mFile.transferTo(new File(file_save_path+fileName_original));
+		    	photofilename = fileName_original;
+		    	System.out.println("실제 전송된 파일 이름 : " +fileName_original);
+			    System.out.println("파일 이름: " + newFileName);
+			    System.out.println("전송된 파일 사이즈: " + mFile.getSize());
+				
 				System.out.println("------------------------------------------------------");
 
 			} catch (Exception e) {
@@ -272,7 +282,56 @@ public class AjaxController {
 		// 로그작업//
 		log = new Log();
 		log.saveLog(idExisttDTO.getId() + " id search");
-
+	 		
+	   return retVal;
+	}
+	
+	@RequestMapping(value = "/myenrolllistajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> myEnrollList(@RequestBody final MyEnrollSearchDTO myEnrollSearchdto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		
+		System.out.println(myEnrollSearchdto.getStuNumber()+" enroll list search");
+		
+		//나의 수강신청 리스트를 불러온다.//
+		List<MyEnrollCourseDTO> myenrollist = null;
+		
+		myenrollist = MyEnrollCourseSearchService.searchmyenrollcourse(myEnrollSearchdto);
+		
+		System.out.println("list size: " + myenrollist.size());
+		
+		retVal.put("list", myenrollist);
+		retVal.put("check", "ok");
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/memoupdateajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> memoWrite(@RequestBody final MemoUpdateDTO memoupdatedto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("memo update ajax call success...");
+		
+		//메모를 등록//
+		isCheck = MemoUpdateService.memoupdateservice(memoupdatedto);
+		
+		retVal.put("check", ""+isCheck);
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/deletecourseajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> deleteCourse(@RequestBody final DeleteCourseDTO deletecoursedto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("delete course ajax call success...");
+		
+		//과목제거 서비스 호출//
+		isCheck = DeleteCourseService.deletecourseservice(deletecoursedto);
+		
+		retVal.put("check", ""+isCheck);
+		
 		return retVal;
 	}
 }

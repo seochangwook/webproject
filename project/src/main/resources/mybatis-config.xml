@@ -10,6 +10,7 @@
 			<dataSource type="POOLED">
 				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
         		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+        		<property name="url" value="jdbc:oracle:thin:@10.131.123.7:1521:xe" />
         		<property name="username" value="system" />
         		<property name="password" value="manager" />
 			</dataSource>
@@ -18,5 +19,7 @@
 	<mappers>
 		<!-- sql service add mapper tag -->
 		<mapper resource="mapper/procedureStudent.xml"/>
+		<mapper resource="mapper/procedureCourse.xml"/>
+		<mapper resource="mapper/myenrolllist.xml"/>
 	</mappers>
 </configuration>

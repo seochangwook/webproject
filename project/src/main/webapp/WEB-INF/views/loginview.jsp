@@ -525,6 +525,7 @@
         <div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         	<button type="button" class="btn btn-primary" id="enrollbutton">등록</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal" id="enrollbutton">등록</button>
         </div>
       </div>
     </div>
