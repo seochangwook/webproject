@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/loginviewcss.css" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -313,15 +315,15 @@
 <body style="background-image:url('resources/images/lotteWorldTower.png')">
 <div class="login-page" >
 	<div id = "login-cont">
-		<h2 id = "login-title">롯데대학교 수강신청 프로그램</h2>
-		<p class= "login-lab">아이디와 비밀번호를 입력하시오.</p>
+		<h2 id = "login-title">Lotte University Login</h2>
+		<!-- <p class= "login-lab">아이디와 비밀번호를 입력하시오.</p> -->
 		<form>
 			<div class="form-group">
-				<label for="usr" class= "login-lab">* ID:</label>
+				<label for="usr" class= "login-lab"> ID:</label>
 				<input type="text" class="form-control" id="idinput">
 		    </div>
 		    <div class="form-group">
-		    	<label for="pwd" class= "login-lab">* Password:</label>
+		    	<label for="pwd" class= "login-lab"> Password:</label>
 		      	<input type="password" data-toggle="tooltip" title="비밀번호 입력" class="form-control" id="passwordinput" placeholder="특수문자/대소문자 표기">
 		    </div>
 		    <div id="btn_group">
@@ -330,7 +332,7 @@
 		    </div>
 		    <div id="btn_group2">
 		    	<button type="button" class="btn btn-login " id="btn_search_id" data-toggle="modal" data-target="#myModal_idsearch">아이디 찾기</button>
-	  			<button type="button" class="btn btn-warning btn-login" id="btn_search_password" data-toggle="modal" data-target="#myModal_passwordsearch">비밀번호 찾기</button>
+	  			<button type="button" class="btn btn-login" id="btn_search_password" data-toggle="modal" data-target="#myModal_passwordsearch">비밀번호 찾기</button>
 	  		</div>
 		</form>
 	</div>
@@ -344,7 +346,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="join-title"><b>회원가입</b></h4>
+          <h2 class="modal-title" ><b>회원가입</b></h2>
         </div>
         <div class="modal-body">
           		<form>
@@ -477,16 +479,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title">아이디 찾기</h2>
-          <h5>학번과 이름으로 검색합니다.</h5>
+          <h2 class="modal-title"><b>아이디 찾기</b></h2>
+          <!--<h5>학번과 이름으로 검색합니다.</h5>  -->
         </div>
         <div class="modal-body">
           	<form>
-          		<label for="usr">* 학번을 입력하시오.</label>
+          		<label for="usr">* 학번: </label>
 				<div class="form-group-name" size="10">
 					<input type="text" class="form-control" id="stunumberinput">
 	    		</div>
-	    		<label for="pwd">* 이름을 입력하시오.</label>
+	    		<label for="pwd">* 이름:</label>
 	    		<div class="form-group-passowrd">
 	      			<input type="text" class="form-control" id="stunameinput">
 	    		</div>
@@ -508,17 +510,17 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title">비밀번호 찾기</h2>
+          <h2 class="modal-title"><b>비밀번호 찾기</b></h2>
           <h5>인증번호를 전송받을 메일주소와 아이디를 입력하시오.</h5>
         </div>
         <div class="modal-body">
           	<form>
-          		<label for="usr">* 아이디를 입력하시오.</label>
+          		<label for="usr">* 아이디:</label>
 				<div class="form-group-name" size="10">
 					<input type="text" class="form-control" id="stuidinput_p">
 	    		</div>
-	    		<label for="email">* 전송할 이메일을 입력하시오.</label>
-	    		<div class="input-group">
+	    		<label for="email">* 이메일 주소: </label>
+	    		<div class="input-group" id="email-adrr">
     				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
     				<input type="text" class="form-control" id="stuemail" placeholder="Email">
   				</div>

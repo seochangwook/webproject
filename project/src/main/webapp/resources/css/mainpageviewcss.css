@@ -1,12 +1,23 @@
 @CHARSET "UTF-8";
  /* Remove the navbar's default margin-bottom and rounded borders */ 
+html{
+	height: 100%;
+    margin: 0 10%;
+}
+body{
+	height: 100%;
+}
 .navbar {
+	height: 4%;
 	margin-bottom: 0;
     border-radius: 0;
+    border-color: #222;
 }
     
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {height: 950px}
+.row.content {
+	height: 100%;
+}
     
 /* Set gray background color and 100% height */
 .sidenav {
@@ -20,6 +31,8 @@ footer {
     background-color: #555;
     color: white;
     padding: 15px;
+    height:5%;
+    font-size:16px;
 }
     
 /* On small screens, set height to 'auto' for sidenav and grid */
@@ -52,17 +65,32 @@ img {
 .container {
     padding: 200px 56px;
 }
+
+#main-container{
+	 height: 87%;
+}
+#nav-cont{
+	font-size: 16px;
+}
 #info1{
 	text-align : left;
 	margin-left : 5px;
 	margin-top : 10px;
 }
-.btn-info{
-	width: 90%;
-	margin-top : 330px;
-	padding : 10px;
+#btn_myinfo_update{
+   width: 45px;
+   padding : 5px;
+   margin: 10px;
+   background-color: #ccc;
+   border-color: #ccc;
+}
+#btn_setting{
+   width: 20px;
+}
+#img-maincont{
+	width: 60%;
+}
+#img-navbar{
+	width: 120px;
 }
 /* table */
-.container{
-	 
-}
