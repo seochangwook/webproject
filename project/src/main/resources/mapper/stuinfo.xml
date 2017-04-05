@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sql">
+	<select id="stuinfo" parameterType="hashmap" resultType="com.lotte.dto.StudentInfoDTO">
+		SELECT s.stu_name, s.stu_birth, s.stu_gender, s.stu_number, s.stu_address, s.stu_grade, s.stu_email, s.stu_phonenumber, s.stu_photo, d.dept_name
+		FROM student s, department d 
+		WHERE s.stu_deptno = d.dept_no AND s.stu_id=#{stuNumber}
+	</select>
+</mapper>

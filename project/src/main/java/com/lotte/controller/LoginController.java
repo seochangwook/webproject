@@ -14,9 +14,7 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginview(Locale locale) throws IOException {
 		ModelAndView view = new ModelAndView();
-		
-		System.out.println("");
-		
+
 		view.setViewName("/loginview");
 		
 		return view;

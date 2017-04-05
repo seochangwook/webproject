@@ -20,5 +20,6 @@
 		<mapper resource="mapper/procedureStudent.xml"/>
 		<mapper resource="mapper/procedureCourse.xml"/>
 		<mapper resource="mapper/myenrolllist.xml"/>
+		<mapper resource="mapper/stuinfo.xml"/>
 	</mappers>
 </configuration>

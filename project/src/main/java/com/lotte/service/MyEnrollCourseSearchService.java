@@ -13,5 +13,11 @@ public class MyEnrollCourseSearchService {
 		
 		return myenrolllist;
 	}
+
+	public static List<MyEnrollCourseDTO> searchmyenrollcourse(String stu_number) {
+		List<MyEnrollCourseDTO> myenrolllist = MyEnrollCourseSearchDao.getmyenrolllist(stu_number);
+		
+		return myenrolllist;
+	}
 	
 }

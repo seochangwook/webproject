@@ -14,7 +14,6 @@ public class StudentDTO {
 	private int stuGrade;
 	private String stuEmail;
 	private String stuPhoneNumber;
-	
 	private String stuPhoto;
 	
 	public StudentDTO(){}

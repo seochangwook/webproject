@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -67,6 +69,7 @@ function refreshcall(){
          user_array = retVal.list;
          var row_count = user_array.length;
           var total_grade = 0;
+          var subjectcount = 0;
           
           $('#contentview').empty();
           
@@ -91,6 +94,7 @@ function refreshcall(){
                //총 학점을 구하기 위한 계산//
                if((index+1) % 4 ==0){
                   total_grade += value.c_grade;
+                  subjectcount += 1;
                }
                
                print_str += "<tr>";
@@ -123,6 +127,9 @@ function refreshcall(){
             
             print_str += "<div>";
             print_str += "<p>* 총 학점: "+total_grade+"</p>";
+            print_str += "</div>";
+            print_str += "<div>";
+            print_str += "<p>* 총 신청과목 수: "+subjectcount+"</p>";
             print_str += "</div>";
             
             $('#contentview').append(print_str);
@@ -226,6 +233,50 @@ function sessionCheck(){
       var url = "http://localhost:8080/project/login";
       $(location).attr("href", url);
 }
+function sidebarrefresh(){
+	var stunumber = $('#stunum').val();
+	   
+	   //ajax call//
+	   var trans_objeect = 
+	   {
+	       'stuNumber':stunumber,
+	    }
+	   
+	   var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+	   
+	   $.ajax({
+	      url: "http://localhost:8080/project/myenrolllistajax",
+	      type: 'POST',
+	      dataType: 'json',
+	      data: trans_json,
+	      contentType: 'application/json',
+	      mimeType: 'application/json',
+	      success: function(retVal){
+	         var checkVal = retVal.check;   
+	         //테이블을 뿌려준다.//
+	         var user_array = [];
+	         //배열적용(ajax컨트롤러에서 HashMap으로 저장한 값을 불러온다.)//
+	         user_array = retVal.list;
+	         var row_count = user_array.length;
+	         var printStr = '';
+	          
+	          $('#subjectlist').empty();
+	          
+	          printStr += "<p>나의 수강과목 정보</p>";
+	          
+	          $.each(user_array, function(index,value) {
+	        	  printStr += "<div class='well'>";     
+	        	  printStr += "<p id='info_sub1'>" + value.c_name + " "+ value.c_date_time +"</p>";
+	        	  printStr += "</div>";
+	          });  
+	          
+	          $('#subjectlist').append(printStr);
+	      },
+	      error: function(retVal, status, er){
+	         alert("error: "+retVal+" status: "+status+" er:"+er);
+	      }
+	   });
+}
       $(function(){
          //click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
          $('#btn__info_click').click(function(){
@@ -270,6 +321,7 @@ function sessionCheck(){
                   user_array = retVal.list;
                   var row_count = user_array.length;
                    var total_grade = 0;
+                   var subjectcount = 0;
                    
                    $('#contentview').empty();
                    
@@ -294,6 +346,7 @@ function sessionCheck(){
                         //총 학점을 구하기 위한 계산//
                         if((index+1) % 4 ==0){
                            total_grade += value.c_grade;
+                           subjectcount += 1;
                         }
                         
                         print_str += "<tr>";
@@ -327,6 +380,9 @@ function sessionCheck(){
                       print_str += "<div>";
                       print_str += "<p>* 총 학점: "+total_grade+"</p>";
                       print_str += "</div>";
+                      print_str += "<div>";
+                      print_str += "<p>* 총 신청과목 수: "+subjectcount+"</p>";
+                      print_str += "</div>";
                       
                       $('#contentview').append(print_str);
                },
@@ -357,9 +413,10 @@ function sessionCheck(){
             $('#contentview').append(html_str);
          });
          $('#btn_home').click(function(){
-            alert("홈으로 돌아가기");
             $('#contentview').empty();
 			$('#contentview').load('${pageContext.request.contextPath}/view.jsp');
+			
+			sidebarrefresh(); //새로고침//
            // var html_str = "<div id='contentview'>";
            // html_str += "<h3>Home View</h3>";
            // html_str += "<p>현재는 홈 뷰 (각 메뉴에 따라 뷰가 변경)</p>";
@@ -438,13 +495,14 @@ function sessionCheck(){
   
 <div class="container-fluid text-center" id="main-container">    
   <div class="row content">
-     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p id="info_sub1">과목소개 - 1</p>
-      </div>
-      <div class="well">
-        <p id="info_sub2">과목소개 - 2</p>
-      </div>
+     <div class="col-sm-2 sidenav" id="subjectlist">
+     <p>나의 수강과목 정보</p>
+     <!-- HTML에서 사용하는 배열 forEach -->
+		<c:forEach items='${listsubject}' var='subject'>
+		<div class="well">
+        	<p id="info_sub1"><c:out value='${subject.c_name}'/>&nbsp&nbsp<c:out value='${subject.c_date_time}'/></p>
+      	</div>
+		</c:forEach>
     </div>
     <div class="col-sm-8 text-left"> 
       <!-- <h1>롯데대학교 수강신청 프로그램</h1> -->
@@ -468,7 +526,6 @@ function sessionCheck(){
   			</div>
   			<input type="hidden" id="sessionid" value='${sessionId}'>
   			<div>
-  			<p id="#info_age">나이 : ${age}</p> 
     		<p id="#info_dept">학과 : ${major}</p>
              <p id="#info_grade">학년 : ${year}</p>
              <p id="#info_birth">생일 : ${birth}</p>

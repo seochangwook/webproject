@@ -65,5 +65,47 @@ public class MyEnrollCourseSearchDao {
 		
 		return list;
 	}
+
+	public static List<MyEnrollCourseDTO> getmyenrolllist(String stu_number) {
+		List<MyEnrollCourseDTO> list = new ArrayList<MyEnrollCourseDTO>();
+		StringBuffer buffer = new StringBuffer();
+		
+		try {
+			//DB Session 愿�由�//
+			is = Resources.getResourceAsStream(res);
+			factory = new SqlSessionFactoryBuilder().build(is);
+			session = factory.openSession();
+		
+			HashMap<String,Object> parammap = new HashMap<String, Object>();
+			
+			parammap.put("stuNumber", Integer.parseInt(stu_number));
+			
+			list = session.selectList(namespace+".myenrolllist", parammap); //留ㅺ컻蹂��닔濡� HashMap�쓣 �궗�슜//
+
+			for(int i=0; i<list.size(); i++){
+				buffer.append("mcourse name: " + list.get(i).getC_name()+" / mdate time: "+ list.get(i).getC_date_time());
+				
+				System.out.println(buffer);
+				
+				buffer.setLength(0); //버퍼 초기화//
+			}
+		}
+		
+		catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+		
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		finally{
+			//�옄�썝諛섑솚//
+			session.commit();
+			session.close();
+		}
+		
+		return list;
+	}
 	
 }
