@@ -34,6 +34,8 @@ select * from student;
 drop table student;
 delete from student;
 
+delete from student where stu_id = 'scw3315';
+
 commit;
 
 -- $ 기초데이터 삽입
@@ -287,6 +289,7 @@ create or replace procedure PRO_LOGIN_ENROLL(
   in_stu_email IN student.stu_email%TYPE,
   in_stu_phonenumber IN student.stu_phonenumber%TYPE,
   in_stu_photo IN student.stu_photo%TYPE,
+  in_stu_gender IN student.stu_gender%TYPE,
   out_result OUT varchar2
 )
 IS
@@ -307,8 +310,8 @@ BEGIN
     COMMIT;
   -- 학생 등록
   ELSIF in_pro_type = 2 THEN
-    INSERT INTO student(stu_id, stu_password,stu_name,stu_birth, stu_number,stu_address,stu_deptno,stu_grade,stu_email,stu_phonenumber,stu_photo ) 
-    VALUES(in_stu_id, in_stu_password,in_stu_name,in_stu_birth, in_stu_number, in_stu_address,in_stu_deptno,in_stu_grade,in_stu_email,in_stu_phonenumber,in_stu_photo);
+    INSERT INTO student(stu_id, stu_password,stu_name,stu_birth, stu_number,stu_address,stu_deptno,stu_grade,stu_email,stu_phonenumber,stu_photo, stu_gender) 
+    VALUES(in_stu_id, in_stu_password,in_stu_name,in_stu_birth, in_stu_number, in_stu_address,in_stu_deptno,in_stu_grade,in_stu_email,in_stu_phonenumber,in_stu_photo, in_stu_gender);
     out_result := '1';
     COMMIT;
   -- 아이디 중복 검사
@@ -356,7 +359,7 @@ SET SERVEROUTPUT ON -- dbms_output이 가능하게 해준느 설정
 DECLARE
   retval number; -- out변수
 BEGIN
-  PRO_LOGIN_ENROLL(6, 'scw0531', '서창욱','tjckd246!','92/04/06',201158102,'경기도 수원시',1,4,'scw05313315@gmail.com','01042084757','seopicture.png', retval);
+  PRO_LOGIN_ENROLL(5, 'scw0531', '서창욱','tjckd246!','92/04/06',20115810,'경기도 수원시',1,4,'scw05313315@gmail.com','01042084757','seopicture.png', '남', retval);
   --PRO_LOGIN_ENROLL(4, 'scw0531', '서창욱','tjckd246!','92/04/06',2011581023,'경기도 수원시',1,4,'scw05313315@gmail.com','01042084757','seopicture.png', retval); -- 수정모드
   DBMS_OUTPUT.PUT_LINE('return value: '||retval);
 END;
@@ -454,4 +457,11 @@ WHERE c.c_number = e.c_number AND c.PRO_NUMBER = p.PRO_NUMBER AND e.STU_NUMBER= 
 SELECT s.stu_name, s.stu_birth, s.stu_gender, s.stu_number, s.stu_address, s.stu_grade, s.stu_email, s.stu_phonenumber, s.stu_photo, d.dept_name
 FROM student s, department d 
 WHERE s.stu_deptno = d.dept_no AND s.stu_id = 'scw0531';
---# 나의 수강과목 리스트
+--# 수강과목 리스트
+SELECT d.dept_name, p.pro_name, c.c_number, c.c_name, c.c_date_time, c.c_grade
+FROM department d, professor p , course c
+WHERE d.DEPT_NO = c.DEPT_NO AND p.PRO_NUMBER = c.PRO_NUMBER AND c.DEPT_NO = 15;
+--------------------------------------------
+--# 오라클 프로세서 늘리기
+ALTER system SET processes=100 scope=spfile;
+COMMIT;
