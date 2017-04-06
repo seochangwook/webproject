@@ -47,6 +47,7 @@ public class MainController {
 		view.addObject("phonenumber", stuinfo.getStu_phonenumber());
 		view.addObject("imagefile", stuinfo.getStu_photo());
 		view.addObject("stunumber", stuinfo.getStu_number());
+		view.addObject("stuName",stuinfo.getStu_name());
 		
 		view.setViewName("/mainpageview");
 		

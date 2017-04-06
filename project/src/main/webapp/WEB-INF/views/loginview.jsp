@@ -25,7 +25,13 @@
 				var input_password = $('#passwordinput').val();
 				
 				if(input_id == '' || input_password == ''){
-					alert('아이디나 비밀번호를 입력하시오.');
+					//alert('아이디나 비밀번호를 입력하시오.');
+					
+					var msg = "아이디나 비밀번호를 입력하시오.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 				
 				else{
@@ -60,7 +66,7 @@
 							var is_check = retVal.check;
 				
 							if(is_check == "true"){
-								alert(input_id+" 로그인 성공!! 환영합니다.");
+								//alert(input_id+" 로그인 성공!! 환영합니다.");
 								
 								$('#btn_group').empty();
 								$('#btn_group2').empty();
@@ -72,7 +78,7 @@
 								var print_str = "";
 								
 								print_str += "<div class='alert alert-success' id='alert-login'>";
-								print_str += "<strong>로그인 성공!!</strong>&nbsp  "+input_id+" 접속을 환영합니다.";
+								print_str += "<strong>로그인 성공!!</strong>&nbsp <br> "+input_id+" 접속을 환영합니다.";
 								print_str += "</div>";
 								//submit을 만들어준다.//
 								print_str += "<form name='TransTest' id='tForm' method='post' action='http://localhost:8080/project/mainpage'>";
@@ -80,21 +86,33 @@
 								print_str += "<input type='hidden' name='country' value='"+input_id+"'>";
 								print_str += "<div id='btn_group3'>";
 								print_str += "<input type='hidden' name='stuId' value='"+input_id+"'>";
-								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지 이동</button>";
+								print_str += "<button name='subject' class='btn btn-success' id='btn-goMain' type='submit' value='move'>수강신청 페이지</button>";
 								print_str += "</form>";
-								print_str += "<input type=button name='subject2' class='btn btn-login' id='btn_go' onclick='pagemove()' value='롯데대학교 홈페이지'></div>";
+								print_str += "<input type=button name='subject2' class='btn btn-login' id='btn_go' onclick='pagemove()' value='롯데대학교 페이지'></div>";
 	
 								$('#btn_group').append(print_str); //설정한 내용들을 다시 뷰에 보여줌//
+								
+								var msg = input_id+" 로그인 성공!! 환영합니다."
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
 							}
 							
 							else{
-								alert("아이디나 비밀번호가 틀립니다. 다시 확인해주세요.");
+								//alert("아이디나 비밀번호가 틀립니다. 다시 확인해주세요.");
 								
 								var htmltext = $('#myModal').html(); //다시 나타내기 위해서 html코드를 가져온다.
 								
 								//다시 다이얼로그를 나타낸다.//
 								$('#myModal').empty();
 								$('#myModal').append(htmltext); 
+								
+								var msg = "아이디나 비밀번호가 틀립니다. 다시 확인해주세요.";
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
 							}
 						},
 						error: function(retVal, status, er){
@@ -108,7 +126,12 @@
 				var usrId = $('#usrId').val();
 				
 				if(usrId == ''){
-					alert('아이디를 입력하시오.');
+					//alert('아이디를 입력하시오.');
+					var msg = "아이디를 입력하시오.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 				else{
 					//ajax call//
@@ -133,12 +156,24 @@
 				          },
 						success: function(retVal){
 							if(retVal.userNotExist){
-								alert(usrId+" 환영합니다.");
+								//alert(usrId+" 환영합니다.");
 								$('#hdnUserNotExist').val('true');
+								
+								var msg = usrId+" 은 사용가능한 아이디입니다.";
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
 							}
 							else{
-								alert("동일한 아이디가 존재합니다.");
+								//alert("동일한 아이디가 존재합니다.");
 								$('#hdnUserNotExist').val('false');
+								
+								var msg = usrId+" 은 이미 등록된 아이디입니다.";
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
 							}							
 						},
 						error: function(retVal, status, er){
@@ -152,7 +187,7 @@
 			//파일선택 시 발생하는 이벤트 처리(전송할 파일 목록에 등록)//
 			var files = []; //파일이 저장될 배열//
 			$('#uploadfile').change(function(event){
-				alert('선택된 파일: ['+event.target.files[0].name+']');
+				//alert('선택된 파일: ['+event.target.files[0].name+']');
 				
 				files=event.target.files;
 			});
@@ -171,11 +206,21 @@
 				var pwdCheck_value = $('#usrpawdcheck').val(); 
 				
 				if(pwdCheck_value != pwd_value){
-					alert('비밀번호가 일치하지 않습니다.');
+					//alert('비밀번호가 일치하지 않습니다.');
+					var msg = "비밀번호가 일치하지 않습니다.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 				
 				else if(pwdCheck_value == pwd_value){
-					alert('비밀번호가 확인 성공.');
+					//alert('비밀번호가 확인 성공.');
+					var msg = "비밀번호가 확인 성공.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 			});
 			
@@ -210,17 +255,35 @@
 				var CheckEnrollEnable = false;
 					
 				if(id_value == '' || pwd_value == ''){
-					alert('아이디 또는 비밀번호를 입력하세요.');
-					CheckEnrollEnable = false
+					//alert('아이디 또는 비밀번호를 입력하세요.');
+					CheckEnrollEnable = false;
+					
+					var msg = "아이디 또는 비밀번호를 입력하세요.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 				if($('#hdnUserNotExist').val() == "false" ){					
-					alert("ID 중복체크를 해야합니다.");	
-					CheckEnrollEnable = false
+					//alert("ID 중복체크를 해야합니다.");	
+					CheckEnrollEnable = false;
+					
+					var msg = "ID 중복체크를 해야합니다.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}				
 				//ajax call을 통한 서버저장//
 				if(pwdCheck_value != pwd_value){
-					alert('비밀번호가 일치하지 않습니다.');
+					//alert('비밀번호가 일치하지 않습니다.');
 					CheckEnrollEnable = false
+					
+					var msg = "비밀번호가 일치하지 않습니다.";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
 				}
 				
 				if(pwdCheck_value == pwd_value){
@@ -228,8 +291,15 @@
 					CheckEnrollEnable = true;
 				}
 				if(files[0] == null){
-					alert('반드시 파일을 1개이상 선택하세요!!');
+					//alert('반드시 파일을 1개이상 선택하세요!!');
 					CheckEnrollEnable = false
+					
+					var msg = "반드시 파일을 1개이상 선택하세요!!";
+					
+					$('#msgbody').empty();
+					$('#msgbody').append("<p>"+msg+"</p>");
+					$('#msgModal').modal('show');
+					
 				}		
 				else{
 					CheckEnrollEnable = true
@@ -267,15 +337,27 @@
 	                        $('.wrap-loading').addClass('display-none');
 	                    },
 	            		success : function(retVal) {
-	            			alert(retVal.enrollSuccess);
+	            			//alert(retVal.enrollSuccess);
 	            			if(retVal.enrollSuccess){
-	            				alert('회원가입 성공!!');
+	            				//alert('회원가입 성공!!');
 	            				$('#myModal').modal('show');
 	            				$('#myModal').modal('hide');
 	            				
+								var msg = "회원가입 성공. 로그인 해주세요.";
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
+	            				
 	            			}
 	            			else if(retVal.check){
-	            				alert('회원가입 실패 (정보를 정확히 입력하세요)');
+	            				//alert('회원가입 실패 (정보를 정확히 입력하세요)');
+	            				
+	            				var msg = "회원가입 실패 (정보를 정확히 입력하세요)";
+								
+								$('#msgbody').empty();
+								$('#msgbody').append("<p>"+msg+"</p>");
+								$('#msgModal').modal('show');
 	            			}
 	            		},
 	            		error : function(retVal, status, er) {
@@ -323,17 +405,29 @@
 						var searchid = retVal.id;
 						
 						if(searchid == '-1'){
-							alert('검색실패. 등록되지 않은 학생입니다.');
+							//alert('검색실패. 등록되지 않은 학생입니다.');
 						
 							$('#stunumberinput').val('');
 							$('#stunameinput').val('');
+							
+							var msg = "검색실패. 등록되지 않은 학생입니다.";
+							
+							$('#msgbody').empty();
+							$('#msgbody').append("<p>"+msg+"</p>");
+							$('#msgModal').modal('show');
 						}
 						
 						else{
-							alert(stuname_value+'님의 아이디는 [' + searchid + '] 입니다.');
+							//alert(stuname_value+'님의 아이디는 [' + searchid + '] 입니다.');
 							
 							$('#stunumberinput').val('');
 							$('#stunameinput').val('');
+							
+							var msg = stuname_value + "님의 아이디는 [" + searchid + "] 입니다.";
+							
+							$('#msgbody').empty();
+							$('#msgbody').append("<p>"+msg+"</p>");
+							$('#msgModal').modal('show');
 						}
 					},
 					error: function(retVal, status, er){
@@ -373,20 +467,32 @@
 						var authnumber = retVal.authnumber;
 						
 						if(searchpassword == ''){
-							alert('실페. 등록되지 않은 학생입니다.');
+							//alert('실페. 등록되지 않은 학생입니다.');
 						
 							$('#stuemail').val('');
 							$('#stuidinput_p').val('');
+							
+							var msg = "등록되지 않은 학생입니다.";
+							
+							$('#msgbody').empty();
+							$('#msgbody').append("<p>"+msg+"</p>");
+							$('#msgModal').modal('show');
 						}
 						
 						else{
-							alert('적으신 이메일로 메일이 발송되었습니다.');
+							//alert('적으신 이메일로 메일이 발송되었습니다.');
 							
 							var print_str = '';
 							print_str += "<input type='hidden' id='passwordstu' name='stupassword' value='"+searchpassword+"'>";
 							print_str += "<input type='hidden' id='authnumberemail' name='stuauth' value='"+authnumber+"'>";
 							
 							$('#myModal_passwordsearch').append(print_str); //다이얼로그에 히든값을 저장//
+							
+							var msg = "적으신 이메일로 메일이 발송되었습니다.";
+							
+							$('#msgbody').empty();
+							$('#msgbody').append("<p>"+msg+"</p>");
+							$('#msgModal').modal('show');
 						}
 					},
 					error: function(retVal, status, er){
@@ -407,17 +513,29 @@
 				var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
 				var decrypted_password = CryptoJS.AES.decrypt(enpassword, key, { iv: iv });
 		
-				alert('**인증성공** -> 비밀번호는 ['+decrypted_password.toString(CryptoJS.enc.Utf8)+'] 입니다.');	
+				//alert('**인증성공** -> 비밀번호는 ['+decrypted_password.toString(CryptoJS.enc.Utf8)+'] 입니다.');	
 				
 				$('#passwordstu').val('');
 				$('#authnumberemail').val('');
+				
+				var msg = "**인증성공** -> 비밀번호는 [" + decrypted_password.toString(CryptoJS.enc.Utf8) + "] 입니다.";
+				
+				$('#msgbody').empty();
+				$('#msgbody').append("<p>"+msg+"</p>");
+				$('#msgModal').modal('show');
 			}
 			
 			else{
-				alert('인증번호가 틀렸습니다. 다시 전송받으세요.');
+				//alert('인증번호가 틀렸습니다. 다시 전송받으세요.');
 				
 				$('#passwordstu').val('');
 				$('#authnumberemail').val('');
+				
+				var msg = "인증번호가 틀렸습니다. 다시 전송받으세요.";
+				
+				$('#msgbody').empty();
+				$('#msgbody').append("<p>"+msg+"</p>");
+				$('#msgModal').modal('show');
 			}
 		}
 </script>
@@ -426,7 +544,7 @@
 <body style="background-image:url('resources/images/lotteWorldTower.png')">
 <div class="login-page" >
 	<div id = "login-cont">
-		<h2 id = "login-title">Lotte University Login</h2>
+		<h2 id = "login-title">Lotte University<br>Login</h2>
 		<!-- <p class= "login-lab">아이디와 비밀번호를 입력하시오.</p> -->
 		<form>
 			<div class="form-group">
@@ -588,7 +706,7 @@
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content modal-con" >
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h2 class="modal-title"><b>아이디 찾기</b></h2>
@@ -619,7 +737,7 @@
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content modal-con">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h2 class="modal-title"><b>비밀번호 찾기</b></h2>
@@ -657,5 +775,22 @@
 <div class="wrap-loading display-none">
     <div><img src="resources/images/ajax-loader.gif" /></div>
 </div> 
+<!-- Modal -->
+  <div class="modal fade" id="msgModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">LOTTE University</h4>
+        </div>
+        <div class="modal-body" id="msgbody">
+          <p>'${msg}'</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

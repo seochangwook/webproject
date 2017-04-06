@@ -21,17 +21,23 @@
 $(document).ready(function(){
    	sessionCheck(); //세션검사//
    $('#contentview').load('${pageContext.request.contextPath}/notice.jsp'); //홈화면
-   sidebarrefresh()
+   sidebarrefresh();
 });
 function memoview(memostr){
-   alert(memostr);
+   //alert(memostr);
+   
+   var msg = memostr;
+	
+	$('#msgbody').empty();
+	$('#msgbody').append("<p>"+msg+"</p>");
+	$('#msgModal').modal('show');
 }
 function modalview_deletecourse(){
    //과목취소//
    var cnumber = $('#dnumber').val();
    var stuNumber = $('#stunum').val();
    
-   alert('제거할 과목 번호: ' + cnumber + '/' + stuNumber);
+   //alert('제거할 과목 번호: ' + cnumber + '/' + stuNumber);
 }
 //Modal Dialog 이벤트//
 function memowriteModalsshow(cnumber){
@@ -129,7 +135,7 @@ function sidebarrefresh(){
 	          $('#subjectlist').append(printStr);
 	      },
 	      error: function(retVal, status, er){
-	         alert("error: "+retVal+" status: "+status+" er:"+er);
+	    	  alert("세션이 만료되었습니다.");
 	      }
 	   });
 }
@@ -170,18 +176,18 @@ function refreshcall(){
           $('#contentview').empty();
           
           if(row_count >= 1){
-        	print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
+        	print_str = "<div style='width:100%; height:700px; overflow:hidden'>"; //스크롤바//
             print_str = "<table class='table table-hover'>";
             print_str += "<thead>";
             print_str += "<tr>";
-            print_str += "<th>구분</th>";
-            print_str += "<th>과목번호</th>";
-            print_str += "<th>과목이름</th>";
-            print_str += "<th>교수명</th>";
-            print_str += "<th>수강시간</th>";
-            print_str += "<th>과목학점</th>";
-            print_str += "<th>메모사항(동일번호 전부 등록)</th>";
-            print_str += "<th>제거(동일번호 전부 취소)</th>";
+            print_str += "<th class='enroll-table'>구분</th>";
+            print_str += "<th class='enroll-table'>과목번호</th>";
+            print_str += "<th class='enroll-table'>과목이름</th>";
+            print_str += "<th class='enroll-table'>교수명</th>";
+            print_str += "<th class='enroll-table'>수강시간</th>";
+            print_str += "<th class='enroll-table'>과목학점</th>";
+            print_str += "<th class='enroll-table'>메모사항</th>";
+            print_str += "<th class='enroll-table'>제거</th>";
             print_str += "</tr>";
             print_str += "</thead>";
             
@@ -208,16 +214,16 @@ function refreshcall(){
                     total_grade += value.c_grade;
                     subjectcount += 1;
                     print_str += "<tr>";
-                    print_str += "<td>"+(cnt)+"</td>";
-                    print_str += "<td>"+value.c_number+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+(cnt)+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.c_number+"</td>";
                     print_str += "<td>"+value.c_name+"</td>";
-                    print_str += "<td>"+value.pro_name+"</td>";
-                    print_str += "<td>"+tempDate+"</td>";
-                    print_str += "<td>"+value.c_grade+"</td>";
-                    print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
+                    print_str += "<td class='tb-enroll-content'>"+value.pro_name+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+tempDate+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.c_grade+"</td>";
+                    print_str += "<td class='tb-enroll-content'><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
                     print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
                     //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                    print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
+                    print_str += "<td class='tb-enroll-content'><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
                     print_str += "</tr>";
                     print_str += "</tbody>";	          			  
           			 cnt++;
@@ -338,18 +344,18 @@ function refreshselectcourse(deptno){
            $('#contentview').append(print_str); //증간적용//
            
            if(row_count >= 1){
-        	   print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
+        	   print_str = "<div style='width:100%; height:700px; overflow:hidden'>"; //스크롤바//
                print_str += "<table class='table table-hover'>";
                print_str += "<thead>";
                print_str += "<tr>";
-               print_str += "<th>구분</th>";
-               print_str += "<th>학과이름</th>";
-               print_str += "<th>교수이름</th>";
-               print_str += "<th>과목번호</th>";
-               print_str += "<th>과목이름</th>";
-               print_str += "<th>수강요일</th>";
-               print_str += "<th>수강학점</th>";
-               print_str += "<th>등록(동일번호 전부 등록)</th>";
+               print_str += "<th class='enroll-table'>구분</th>";
+               print_str += "<th class='enroll-table'>학과이름</th>";
+               print_str += "<th class='enroll-table'>교수이름</th>";
+               print_str += "<th class='enroll-table'>과목번호</th>";
+               print_str += "<th class='enroll-table'>과목이름</th>";
+               print_str += "<th class='enroll-table'>수강요일</th>";
+               print_str += "<th class='enroll-table'>수강학점</th>";
+               print_str += "<th class='enroll-table'>등록</th>";
                print_str += "</tr>";
                print_str += "</thead>";
                
@@ -374,15 +380,15 @@ function refreshselectcourse(deptno){
               			 tempDate+=strArray[1]+"교시";
               		 }
               		print_str += "<tr>";
-                    print_str += "<td>"+(cnt)+"</td>";
-                    print_str += "<td>"+value.dept_name+"</td>";
-                    print_str += "<td>"+value.pro_name+"</td>";
-                    print_str += "<td>"+value.c_number+"</td>";
-                    print_str += "<td>"+value.c_name+"</td>";
-                    print_str += "<td>"+tempDate+"</td>";
-                    print_str += "<td>"+value.c_grade+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+(cnt)+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.dept_name+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.pro_name+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.c_number+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.c_name+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+tempDate+"</td>";
+                    print_str += "<td class='tb-enroll-content'>"+value.c_grade+"</td>";
                     //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                    print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                    print_str += "<td class='tb-enroll-content'><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
                     print_str += "</tr>";  	          			
                     print_str += "</tbody>";          			  
 	          			 cnt++;
@@ -409,7 +415,7 @@ function refreshselectcourse(deptno){
              else if(row_count == 0){
                print_str = "<table class='table table-hover'>";
                print_str += "<tbody>";
-               print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150' id='empty-image'></td>";
+               print_str += "<td><img src='./resources/images/emptypage_image.png' height='150' id='empty-image'></td>";
                print_str += "</tr>";
                print_str += "<tr>";
                print_str += "<td><p style='text-align: center; font-size: 17px; font-style: bold;'>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p></td>";
@@ -470,14 +476,26 @@ function enrollcoursae(courseNumber){
 	      },
 	      success: function(retVal){
 	         if(retVal.check == 'true'){
-	            alert('신청성공');
+	            //alert('신청성공');
+	            
+	            var msg = "신청완료.";
+				
+				$('#msgbody').empty();
+				$('#msgbody').append("<p>"+msg+"</p>");
+				$('#msgModal').modal('show');
 	            
 	            //리플래시//
 	            sidebarrefresh();
 	         }
 	         
 	         else{
-	            alert('이미 수강신청된 과목이거나 학점과 수강일을 확인하세요.');
+	            //alert('이미 수강신청된 과목이거나 학점과 수강일을 확인하세요.');
+	            
+	            var msg = "이미 수강신청된 과목이거나 학점과 수강일을 확인하세요.";
+				
+				$('#msgbody').empty();
+				$('#msgbody').append("<p>"+msg+"</p>");
+				$('#msgModal').modal('show');
 	            
 	            sidebarrefresh();
 	         }
@@ -520,14 +538,26 @@ function modalview_memowrite(){
       },
       success: function(retVal){
          if(retVal.check == 'true'){
-            alert('메모등록  및 변경 성공');
+            //alert('메모등록  및 변경 성공');
+            
+            var msg = "메모등록  및 변경 완료.";
+				
+			$('#msgbody').empty();
+			$('#msgbody').append("<p>"+msg+"</p>");
+			$('#msgModal').modal('show');
             
             //location.reload();
             refreshcall(); //해당 테이블을 다시 호출한다.//
          }
          
          else{
-            alert('메모등록  실패');
+            //alert('메모등록  실패');
+            
+            var msg = "메모등록  실패.";
+				
+			$('#msgbody').empty();
+			$('#msgbody').append("<p>"+msg+"</p>");
+			$('#msgModal').modal('show');
             
             //location.reload();
             refreshcall();
@@ -569,13 +599,25 @@ function modalview_deletecourse(){
          var check = retVal.check;
          
          if(check == 'true'){
-            alert('과목 삭제 성공');
+            //alert('과목 삭제 성공');
+            
+            var msg = "과목 수강취소 완료.";
+				
+			$('#msgbody').empty();
+			$('#msgbody').append("<p>"+msg+"</p>");
+			$('#msgModal').modal('show');
             
             refreshcall();
          }
          
          else if(check == 'false'){
-            alert('과목 삭제 실패');   
+            //alert('과목 삭제 실패');   
+            
+            var msg = "과목 수강취소 실패.";
+				
+			$('#msgbody').empty();
+			$('#msgbody').append("<p>"+msg+"</p>");
+			$('#msgModal').modal('show');
             
             refreshcall();
          }
@@ -589,16 +631,22 @@ function sessionCheck(){
    var getsessionid = $('#sessionid').val();
 
    if(getsessionid == ''){
-      alert('세션이 만료된 페이지 입니다.');
+      //alert('세션이 만료된 페이지 입니다.');
+      
+      var msg = "세션이 만료된 페이지 입니다.";
+				
+		$('#msgbody').empty();
+		$('#msgbody').append("<p>"+msg+"</p>");
+		$('#msgModal').modal('show');
    
       var url = "http://localhost:8080/project/login";
       $(location).attr("href", url);
-}
+	}
      
    $(function(){
          //click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
          $('#btn__info_click').click(function(){
-            alert('선택');
+            //alert('선택');
             
             var html_str = "<p>소개관련 뷰</p>";
             
@@ -674,18 +722,18 @@ function sessionCheck(){
                    $('#contentview').append(print_str); //증간적용//
                    
                    if(row_count >= 1){
-                	   print_str = "<div style='width:100%; height:730px; overflow:auto'>"; //스크롤바//
+                	   print_str = "<div style='width:100%; height:730px; overflow:hidden'>"; //스크롤바//
                        print_str += "<table class='table table-hover'>";
                        print_str += "<thead>";
                        print_str += "<tr>";
-                       print_str += "<th>구분</th>";
-                       print_str += "<th>학과이름</th>";
-                       print_str += "<th>교수이름</th>";
-                       print_str += "<th>과목번호</th>";
-                       print_str += "<th>과목이름</th>";
-                       print_str += "<th>수강요일</th>";
-                       print_str += "<th>수강학점</th>";
-                       print_str += "<th>등록(동일번호 전부 등록)</th>";
+                       print_str += "<th class='enroll-table'>구분</th>";
+                       print_str += "<th class='enroll-table'>학과이름</th>";
+                       print_str += "<th class='enroll-table'>교수이름</th>";
+                       print_str += "<th class='enroll-table'>과목번호</th>";
+                       print_str += "<th class='enroll-table'>과목이름</th>";
+                       print_str += "<th class='enroll-table'>수강요일</th>";
+                       print_str += "<th class='enroll-table'>수강학점</th>";
+                       print_str += "<th class='enroll-table'>등록</th>";
                        print_str += "</tr>";
                        print_str += "</thead>";
                        
@@ -710,15 +758,15 @@ function sessionCheck(){
                       			 tempDate+=strArray[1]+"교시";
                       		 }
                       		print_str += "<tr>";
-                            print_str += "<td>"+(cnt)+"</td>";
-                            print_str += "<td>"+value.dept_name+"</td>";
-                            print_str += "<td>"+value.pro_name+"</td>";
-                            print_str += "<td>"+value.c_number+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+(cnt)+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+value.dept_name+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+value.pro_name+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+value.c_number+"</td>";
                             print_str += "<td>"+value.c_name+"</td>";
-                            print_str += "<td>"+tempDate+"</td>";
-                            print_str += "<td>"+value.c_grade+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+tempDate+"</td>";
+                            print_str += "<td class='tb-enroll-content'>"+value.c_grade+"</td>";
                             //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                            print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                            print_str += "<td id='tb-enroll'><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
                             print_str += "</tr>";  	          			
                             print_str += "</tbody>";          			  
        	          			 cnt++;
@@ -804,18 +852,18 @@ function sessionCheck(){
                    $('#contentview').empty();
                    
                    if(row_count >= 1){
-                	 print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
+                	 print_str = "<div style='width:100%; height:700px; overflow:hidden'>"; //스크롤바//
                      print_str = "<table class='table table-hover'>";
                      print_str += "<thead>";
                      print_str += "<tr>";
-                     print_str += "<th>구분</th>";
-                     print_str += "<th>과목번호</th>";
-                     print_str += "<th>과목이름</th>";
-                     print_str += "<th>교수명</th>";
-                     print_str += "<th>수강시간</th>";
-                     print_str += "<th>과목학점</th>";
-                     print_str += "<th>메모사항(동일번호 전부 등록)</th>";
-                     print_str += "<th>제거(동일번호 전부 취소)</th>";
+                     print_str += "<th class='enroll-table'>구분</th>";
+                     print_str += "<th class='enroll-table'>과목번호</th>";
+                     print_str += "<th class='enroll-table'>과목이름</th>";
+                     print_str += "<th class='enroll-table'>교수명</th>";
+                     print_str += "<th class='enroll-table'>수강시간</th>";
+                     print_str += "<th class='enroll-table'>과목학점</th>";
+                     print_str += "<th class='enroll-table'>메모사항</th>";
+                     print_str += "<th class='enroll-table'>제거</th>";
                      print_str += "</tr>";
                      print_str += "</thead>";
                      
@@ -843,16 +891,16 @@ function sessionCheck(){
                              total_grade += value.c_grade;
                              subjectcount += 1;
                              print_str += "<tr>";
-                             print_str += "<td>"+(cnt)+"</td>";
-                             print_str += "<td>"+value.c_number+"</td>";
+                             print_str += "<td class='tb-enroll-content'>"+(cnt)+"</td>";
+                             print_str += "<td class='tb-enroll-content'>"+value.c_number+"</td>";
                              print_str += "<td>"+value.c_name+"</td>";
-                             print_str += "<td>"+value.pro_name+"</td>";
-                             print_str += "<td>"+tempDate+"</td>";
-                             print_str += "<td>"+value.c_grade+"</td>";
-                             print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
+                             print_str += "<td class='tb-enroll-content'>"+value.pro_name+"</td>";
+                             print_str += "<td class='tb-enroll-content'>"+tempDate+"</td>";
+                             print_str += "<td class='tb-enroll-content'>"+value.c_grade+"</td>";
+                             print_str += "<td class='tb-enroll-content'><input type=button name='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.name)' value='보기'>&nbsp&nbsp";
                              print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
                              //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                             print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
+                             print_str += "<td class='tb-enroll-content'><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
                              print_str += "</tr>";
                              print_str += "</tbody>";	          			  
      	          			 cnt++;
@@ -909,21 +957,21 @@ function sessionCheck(){
             });
          });
          $('#info_sub1').click(function(){
-            alert('선택');
+            //alert('선택');
             
             var html_str = "<p>과목소개 1 뷰</p>";
             $('#contentview').empty();
             $('#contentview').append(html_str);
          });
          $('#info_sub2').click(function(){
-            alert('선택');
+            //alert('선택');
             
             var html_str = "<p>과목소개 2 뷰</p>";
             $('#contentview').empty();
             $('#contentview').append(html_str);
          });
          $('#btn_myinfo_update').click(function(){
-            alert("선택");
+            //alert("선택");
             
             var html_str = "<p>내 정보 수정 뷰</p>";
             $('#contentview').empty();
@@ -976,13 +1024,18 @@ function sessionCheck(){
                   var is_check = retVal;
                
                   if(is_check == 'true'){
-                     //세션종료 성공 시 다시 로그인 페이지로 리다이렉션
                      var url = "http://localhost:8080/project/login";
                      $(location).attr("href", url);
                   }
                   
                   else if(is_check == 'false'){
-                     alert('세션종료 실패');   
+                     //alert('세션종료 실패');   
+                     
+                	  var msg = "세션종료 실패.";
+      				
+          				$('#msgbody').empty();
+          				$('#msgbody').append("<p>"+msg+"</p>");
+          				$('#msgModal').modal('show');
                   }
                },
                error: function(retVal, status, er){
@@ -1022,12 +1075,12 @@ function sessionCheck(){
   
 <div class="container-fluid text-center" id="main-container">    
   <div class="row content">
-     <div class="col-sm-2 sidenav" id="subjectlist"  style="overflow:scroll; height:100%;">
+     <div class="col-sm-2 sidenav" id="subjectlist"  style="overflow:hidden; height:100%;">
      
     </div>
     <div class="col-sm-8 text-left"> 
       <!-- <h1>롯데대학교 수강신청 프로그램</h1> -->
-      <img src="resources/images/uploadimg/enroll.png" id="img-maincont"> 
+        <img src="resources/images/uploadimg/enroll.png" id="img-maincont">
       <hr>
       <div id="contentview">
       	
@@ -1038,7 +1091,7 @@ function sessionCheck(){
   			<img src="resources/images/uploadimg/${imagefile}" class="" alt="Cinque Terre" style="width:100%">
   			<div>
 	  			<h6 id="title"><b>${sessionId}</b><br>
-	  			<p id="cardName">서창욱</p>
+	  			<p id="cardName">${stuName}</p>
 	            </h6>
 	            <hr>
 	  			 <!-- class="img-circle".....ㅎㅎ -->
@@ -1070,6 +1123,23 @@ function sessionCheck(){
 <footer class="container-fluid text-center">
   <p>LOTTE DATA COMMUNICATION Java Programming B class</p>
 </footer>
+ <!-- Modal -->
+  <div class="modal fade" id="msgModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">LOTTE University</h4>
+        </div>
+        <div class="modal-body" id="msgbody">
+          <p>'${msg}'</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- Modal -->
   <div class="modal fade" id="deletecou" role="dialog">
     <div class="modal-dialog">
@@ -1125,5 +1195,6 @@ function sessionCheck(){
       </div>
     </div>
   </div>
+  
 </body>
 </html>

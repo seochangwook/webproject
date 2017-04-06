@@ -2,16 +2,16 @@
     pageEncoding="EUC-KR"%>
 <style type="text/css">
 
-.tg  {border-collapse:collapse;border-spacing:0;width:100%;}
+.tg  {border-collapse:collapse;border-spacing:0;width:90%; margin-left:auto; margin-right:auto;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 19px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:3px 19px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
-.tg .tg-7a16{background-color:#fffc9e;text-align:center}
-.tg .tg-s6z2{text-align:center}
+.tg .tg-7a16{background-color:#ccc;text-align:center}
+.tg .tg-s6z2{text-align:center; vertical-align: middle}
+
 
 </style>
-<h3>수강신청 주요 일정</h3>
-<p>안내메세지</p>
-<table class="tg">
+<h3 style = "text-align: center; color:#586069"><수강신청 주요 일정></h3><br>
+<table class="tg table table-bordered">
   <tr>
     <th class="tg-7a16">구분</th>
     <th class="tg-7a16">대상</th>
