@@ -1,19 +1,37 @@
 @CHARSET "UTF-8";
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url('https://fonts.googleapis.com/css?family=Roboto');	
  /* Remove the navbar's default margin-bottom and rounded borders */ 
+hr{
+	margin-top: 0px;
+	margin-bottom: 3px;
+	
+}
 html{
 	height: 100%;
     margin: 0 10%;
 }
 body{
 	height: 100%;
+	font-family: 'Nanum Gothic', serif, bold;
 }
 .navbar {
-	height: 4%;
+	background-color: white;
 	margin-bottom: 0;
     border-radius: 0;
-    border-color: #222;
+    border-color: white;
 }
-    
+#nav1 {
+	height: 4%;
+}
+#nav2 {
+	height: 7%;
+}
+#cardName{
+	font-size: 23px;
+	font-family: 'Nanum Gothic', serif;
+}
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
 	height: 100%;
@@ -21,8 +39,7 @@ body{
     
 /* Set gray background color and 100% height */
 .sidenav {
-    padding-top: 20px;
-    background-color: #f1f1f1;
+    background-color: white;
     height: 100%;
 }
     
@@ -31,8 +48,8 @@ footer {
     background-color: #555;
     color: white;
     padding: 15px;
-    height:5%;
-    font-size:16px;
+    height:4%;
+    font-size: 12px;
 }
     
 /* On small screens, set height to 'auto' for sidenav and grid */
@@ -42,20 +59,26 @@ footer {
      	padding: 15px;
      }
 .row.content {height:auto;} 
-}  
+}
+  
+.well{
+	background-color: white;
+	text-align: left;
+}
+
 
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     width: 90%;
     height: 90%;
     border-radius: 5px;
     margin-left: 13px;
-    margin-top : 15px;
+    text-align: left;
+    color:#586069;    
 }
-
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+#title{
+	font-size: 36px;
+	font-family: 'Roboto', sans-serif;
 }
 
 img {
@@ -65,12 +88,21 @@ img {
 .container {
     padding: 200px 56px;
 }
-
-#main-container{
-	 height: 87%;
+.octicon{
+	margin-right: 10px;
 }
-#nav-cont{
-	font-size: 16px;
+#btn_home{
+	margin-left: 10px;
+}
+#main-container{
+	margin-top:10px;
+	 height: 82%;
+}
+#nav-cont{	
+	font-size: 18px;
+}
+.nav_btn{
+	margin-top:15px;
 }
 #info1{
 	text-align : left;
@@ -79,10 +111,12 @@ img {
 }
 #btn_myinfo_update{
    width: 45px;
-   padding : 5px;
-   margin: 10px;
-   background-color: #ccc;
-   border-color: #ccc;
+   background-color: white;
+   border-color: white;
+}
+.info_data{
+	margin-bottom: 3px;
+	color: #777;
 }
 #btn_setting{
    width: 20px;
@@ -91,6 +125,11 @@ img {
 	width: 60%;
 }
 #img-navbar{
-	width: 120px;
+	width: 170px;
+}
+#empty-image{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 /* table */

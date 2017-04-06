@@ -20,7 +20,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
    	sessionCheck(); //세션검사//
-   $('#contentview').load('${pageContext.request.contextPath}/view.jsp'); //홈화면
+   $('#contentview').load('${pageContext.request.contextPath}/notice.jsp'); //홈화면
+   sidebarrefresh()
 });
 function memoview(memostr){
    alert(memostr);
@@ -78,15 +79,53 @@ function sidebarrefresh(){
 	         var printStr = '';
 	          
 	          $('#subjectlist').empty();
+	          var tempName="";
+	          var tempMemo="";
+	          var tempDate="";
+	          var strArray;	          
+	          var tempDay="";
+	          var tempTime="";
+	          var idx=0;
 	          
-	          printStr += "<p>나의 수강과목 정보</p>";
+	          if(row_count > 0){
+	        	  $.each(user_array, function(index,value) {
+	                	 if((index+1) % 4 == 0){
+	                		 strArray = value.c_date_time.split("|");
+	                		 if(idx == 3){                    			
+	                			 tempDate+=strArray[1]+"교시";
+	                		 }
+	                		printStr += "<div class='well'>";     
+	               	  	printStr += "<p id='info_sub1' style='font-size:14px;color:#0366d6'><b>"+value.c_name+"</b></p>";
+	               	  	printStr += "<hr><p style='text-align:right;font-size:12px;color:#586069 '>"+value.c_memo+"</p>";
+	               	  	printStr += "<hr><p style='text-align:right;font-size:11px;color:#586069'>"+tempDate+"</p>";
+	               	  	printStr += "</div>";
+	 	          		     idx=0;
+	                	 }
+	                	 else{
+	                		 strArray = value.c_date_time.split("|");
+	                		 if(idx == 0){                    			
+	          	          		tempDate=strArray[0] + " " + strArray[1] + "교시";
+	                		 }
+	                		 else if(idx==2){
+	     	          			tempDate+="<br>";
+	     		          		tempDate+=strArray[0] + " " + strArray[1] + "교시";
+	     	          		 }
+	                		 else{
+	     	          			tempDate+=strArray[1]+"교시";
+	     	          		 }
+	    	          		 idx++;
+	                	 }
+	                	 
+	          	});       
+	          }
 	          
-	          $.each(user_array, function(index,value) {
+	          else if(row_count == 0){
 	        	  printStr += "<div class='well'>";     
-	        	  printStr += "<p id='info_sub1'>" + value.c_name + " "+ value.c_date_time +"</p>";
-	        	  printStr += "</div>";
-	          });  
+             	  	printStr += "<p id='info_sub1' style='font-size:14px;color:#586069; margin:0px'><b>수강내역이 없습니다.</b></p>";
+             	  	printStr += "</div>";
+	          }
 	          
+	          	          
 	          $('#subjectlist').append(printStr);
 	      },
 	      error: function(retVal, status, er){
@@ -148,35 +187,66 @@ function refreshcall(){
             
             print_str += "<tbody>";
             //배열 출력(.each를 이용)//
+            var total_grade=0;
+            var tempNumber="";
+            var tempName="";
+            var tempGrade="";
+            var tempMemo="";
+            var tempPName="";
+            var tempDate="";
+            var tempDay="";
+            var tempTime="";
+            var strArray;
+            var idx=0;
+            var cnt=1;
             $.each(user_array, function(index,value) {
-               //총 학점을 구하기 위한 계산//
-               if((index+1) % 4 ==0){
-                  total_grade += value.c_grade;
-                  subjectcount += 1;
-               }
-               
-               print_str += "<tr>";
-                  print_str += "<td>"+(index+1)+"</td>";
-                  print_str += "<td>"+value.c_number+"</td>";
-                  print_str += "<td>"+value.c_name+"</td>";
-                  print_str += "<td>"+value.pro_name+"</td>";
-                  print_str += "<td>"+value.c_date_time+"</td>";
-                  print_str += "<td>"+value.c_grade+"</td>";
-                  print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
-                  print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
-                  //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                  print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
-                  print_str += "</tr>";
-               });   
-            print_str += "</tbody>";
+           	 if((index+1) % 4 == 0){
+           		 strArray = value.c_date_time.split("|");
+           		 if(idx == 3){                    			
+           			 tempDate+=strArray[1]+"교시";
+           		 }
+                    total_grade += value.c_grade;
+                    subjectcount += 1;
+                    print_str += "<tr>";
+                    print_str += "<td>"+(cnt)+"</td>";
+                    print_str += "<td>"+value.c_number+"</td>";
+                    print_str += "<td>"+value.c_name+"</td>";
+                    print_str += "<td>"+value.pro_name+"</td>";
+                    print_str += "<td>"+tempDate+"</td>";
+                    print_str += "<td>"+value.c_grade+"</td>";
+                    print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
+                    print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
+                    //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                    print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
+                    print_str += "</tr>";
+                    print_str += "</tbody>";	          			  
+          			 cnt++;
+          		     idx=0;
+           	 }
+           	 else{
+           		 strArray = value.c_date_time.split("|");
+           		 if(idx == 0){                    			
+     	          		tempDate=strArray[0] + " " + strArray[1] + "교시";
+           		 }
+           		 else if(idx==2){
+	          			tempDate+="<br>";
+		          		tempDate+=strArray[0] + " " + strArray[1] + "교시";
+	          		 }
+           		 else{
+	          			tempDate+=strArray[1]+"교시";
+	          		 }
+	          		 idx++;
+           	 }
+           	 
+     });
          }
           
           else if(row_count == 0){
             print_str = "<table class='table table-hover'>";
             print_str += "<tbody>";
             print_str += "<tr>";
-            print_str += "<td><img src='/resources/images/emptypage_image.png' width='400' height='150'></td>";
-            print_str += "<td><p>테이블에 데이터가 없습니다</p</td>";
+            //print_str += "<td><img src='resources/images/emptypage_image.png' width='400' height='150'></td>";
+            print_str += "<td><p style='text-align: center; font-size: 17px; font-style: bold;'>수강내역이 없습니다.</p</td>";
             print_str += "</tr>";
             print_str += "</tbody>";
          }
@@ -284,29 +354,65 @@ function refreshselectcourse(deptno){
                print_str += "</thead>";
                
                print_str += "<tbody>";
-               //배열 출력(.each를 이용)//
+               //배열 출력(.each를 이용)//var tempNumber="";
+               var tempName="";
+               var tempDName="";
+               var tempGrade="";
+               var tempMemo="";
+               var tempPName="";
+               var tempDate="";
+               var tempDay="";
+               var tempTime="";
+               var strArray;
+               var idx=0;
+               var cnt=1;
+               
                $.each(user_array, function(index,value) {
-                  	 print_str += "<tr>";
-                     print_str += "<td>"+(index+1)+"</td>";
-                     print_str += "<td>"+value.dept_name+"</td>";
-                     print_str += "<td>"+value.pro_name+"</td>";
-                     print_str += "<td>"+value.c_number+"</td>";
-                     print_str += "<td>"+value.c_name+"</td>";
-                     print_str += "<td>"+value.c_date_time+"</td>";
-                     print_str += "<td>"+value.c_grade+"</td>";
-                     //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                     print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
-                     print_str += "</tr>";
-                  });   
-               print_str += "</tbody>";
+              	 if((index+1) % 4 == 0){
+              		 strArray = value.c_date_time.split("|");
+              		 if(idx == 3){                    			
+              			 tempDate+=strArray[1]+"교시";
+              		 }
+              		print_str += "<tr>";
+                    print_str += "<td>"+(cnt)+"</td>";
+                    print_str += "<td>"+value.dept_name+"</td>";
+                    print_str += "<td>"+value.pro_name+"</td>";
+                    print_str += "<td>"+value.c_number+"</td>";
+                    print_str += "<td>"+value.c_name+"</td>";
+                    print_str += "<td>"+tempDate+"</td>";
+                    print_str += "<td>"+value.c_grade+"</td>";
+                    //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                    print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                    print_str += "</tr>";  	          			
+                    print_str += "</tbody>";          			  
+	          			 cnt++;
+	          		     idx=0;
+              	 }
+              	 else{
+              		 strArray = value.c_date_time.split("|");
+              		 if(idx == 0){                    			
+        	          		tempDate=strArray[0] + " " + strArray[1] + "교시";
+              		 }
+              		 else if(idx==2){
+   	          			tempDate+="<br>";
+   		          		tempDate+=strArray[0] + " " + strArray[1] + "교시";
+   	          		 }
+              		 else{
+   	          			tempDate+=strArray[1]+"교시";
+   	          		 }
+  	          		 idx++;
+              	 }
+              	 
+        });  
             }
              
              else if(row_count == 0){
                print_str = "<table class='table table-hover'>";
                print_str += "<tbody>";
+               print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150' id='empty-image'></td>";
+               print_str += "</tr>";
                print_str += "<tr>";
-               print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150'></td>";
-               print_str += "<td><p>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p</td>";
+               print_str += "<td><p style='text-align: center; font-size: 17px; font-style: bold;'>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p></td>";
                print_str += "</tr>";
                print_str += "</tbody>";
             }
@@ -488,7 +594,8 @@ function sessionCheck(){
       var url = "http://localhost:8080/project/login";
       $(location).attr("href", url);
 }
-      $(function(){
+     
+   $(function(){
          //click의 function을 넣은것은 callback이다.(Javascript는 callback구조)//
          $('#btn__info_click').click(function(){
             alert('선택');
@@ -583,29 +690,67 @@ function sessionCheck(){
                        print_str += "</thead>";
                        
                        print_str += "<tbody>";
-                       //배열 출력(.each를 이용)//
+                       var tempNumber="";
+                       var tempName="";
+                       var tempDName="";
+                       var tempGrade="";
+                       var tempMemo="";
+                       var tempPName="";
+                       var tempDate="";
+                       var tempDay="";
+                       var tempTime="";
+                       var strArray;
+                       var idx=0;
+                       var cnt=1;
+                       
                        $.each(user_array, function(index,value) {
-                          	 print_str += "<tr>";
-                             print_str += "<td>"+(index+1)+"</td>";
-                             print_str += "<td>"+value.dept_name+"</td>";
-                             print_str += "<td>"+value.pro_name+"</td>";
-                             print_str += "<td>"+value.c_number+"</td>";
-                             print_str += "<td>"+value.c_name+"</td>";
-                             print_str += "<td>"+value.c_date_time+"</td>";
-                             print_str += "<td>"+value.c_grade+"</td>";
-                             //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                             print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
-                             print_str += "</tr>";
-                          });   
-                       print_str += "</tbody>";
+                      	 if((index+1) % 4 == 0){
+                      		 strArray = value.c_date_time.split("|");
+                      		 if(idx == 3){                    			
+                      			 tempDate+=strArray[1]+"교시";
+                      		 }
+                      		print_str += "<tr>";
+                            print_str += "<td>"+(cnt)+"</td>";
+                            print_str += "<td>"+value.dept_name+"</td>";
+                            print_str += "<td>"+value.pro_name+"</td>";
+                            print_str += "<td>"+value.c_number+"</td>";
+                            print_str += "<td>"+value.c_name+"</td>";
+                            print_str += "<td>"+tempDate+"</td>";
+                            print_str += "<td>"+value.c_grade+"</td>";
+                            //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                            print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                            print_str += "</tr>";  	          			
+                            print_str += "</tbody>";          			  
+       	          			 cnt++;
+       	          		     idx=0;
+                      	 }
+                      	 else{
+                      		 strArray = value.c_date_time.split("|");
+                      		 if(idx == 0){                    			
+                	          		tempDate=strArray[0] + " " + strArray[1] + "교시";
+                      		 }
+                      		 else if(idx==2){
+           	          			tempDate+="<br>";
+           		          		tempDate+=strArray[0] + " " + strArray[1] + "교시";
+           	          		 }
+                      		 else{
+           	          			tempDate+=strArray[1]+"교시";
+           	          		 }
+          	          		 idx++;
+                      	 }
+                      	 
+  	          });                       
+                           
                     }
                      
                      else if(row_count == 0){
                        print_str = "<table class='table table-hover'>";
                        print_str += "<tbody>";
                        print_str += "<tr>";
-                       print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150'></td>";
-                       print_str += "<td><p>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p</td>";
+                       print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150' id='empty-image'></td>";
+                       print_str += "</tr>";
+                       print_str += "<tr>";
+                       print_str += "<td><p style='text-align: center; font-size: 17px; font-style: bold;'>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p></td>";
                        print_str += "</tr>";
                        print_str += "</tbody>";
                     }
@@ -676,35 +821,70 @@ function sessionCheck(){
                      
                      print_str += "<tbody>";
                      //배열 출력(.each를 이용)//
+                     
+                     var total_grade=0;
+                     var tempNumber="";
+                     var tempName="";
+                     var tempGrade="";
+                     var tempMemo="";
+                     var tempPName="";
+                     var tempDate="";
+                     var tempDay="";
+                     var tempTime="";
+                     var strArray;
+                     var idx=0;
+                     var cnt=1;
                      $.each(user_array, function(index,value) {
-                        //총 학점을 구하기 위한 계산//
-                        if((index+1) % 4 ==0){
-                           total_grade += value.c_grade;
-                           subjectcount += 1;
-                        }
-                        
-                        print_str += "<tr>";
-                           print_str += "<td>"+(index+1)+"</td>";
-                           print_str += "<td>"+value.c_number+"</td>";
-                           print_str += "<td>"+value.c_name+"</td>";
-                           print_str += "<td>"+value.pro_name+"</td>";
-                           print_str += "<td>"+value.c_date_time+"</td>";
-                           print_str += "<td>"+value.c_grade+"</td>";
-                           print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
-                           print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
-                           //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
-                           print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
-                           print_str += "</tr>";
-                        });   
-                     print_str += "</tbody>";
+                    	 if((index+1) % 4 == 0){
+                    		 strArray = value.c_date_time.split("|");
+                    		 if(idx == 3){                    			
+                    			 tempDate+=strArray[1]+"교시";
+                    		 }
+                             total_grade += value.c_grade;
+                             subjectcount += 1;
+                             print_str += "<tr>";
+                             print_str += "<td>"+(cnt)+"</td>";
+                             print_str += "<td>"+value.c_number+"</td>";
+                             print_str += "<td>"+value.c_name+"</td>";
+                             print_str += "<td>"+value.pro_name+"</td>";
+                             print_str += "<td>"+tempDate+"</td>";
+                             print_str += "<td>"+value.c_grade+"</td>";
+                             print_str += "<td><button value='"+value.c_memo+"' class='btn btn-primary' onclick='memoview(this.value)'>보기</button> &nbsp&nbsp";
+                             print_str += "<button value='"+value.c_number+"' class='btn btn-success' onclick='memowriteModalsshow(this.value)'>작성</button></td>";
+                             //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                             print_str += "<td><button value='"+value.c_number+"' class='btn btn-danger' onclick='deletecourse(this.value)'>과목취소</button></td>";
+                             print_str += "</tr>";
+                             print_str += "</tbody>";	          			  
+     	          			 cnt++;
+     	          		     idx=0;
+                    	 }
+                    	 else{
+                    		 strArray = value.c_date_time.split("|");
+                    		 if(idx == 0){                    			
+              	          		tempDate=strArray[0] + " " + strArray[1] + "교시";
+                    		 }
+                    		 else if(idx==2){
+         	          			tempDate+="<br>";
+         		          		tempDate+=strArray[0] + " " + strArray[1] + "교시";
+         	          		 }
+                    		 else{
+         	          			tempDate+=strArray[1]+"교시";
+         	          		 }
+        	          		 idx++;
+                    	 }
+                    	 
+	          });
+                    
+                     
+                    
                   }
                    
                    else if(row_count == 0){
                      print_str = "<table class='table table-hover'>";
                      print_str += "<tbody>";
                      print_str += "<tr>";
-                     print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150'></td>";
-                     print_str += "<td><p>테이블에 데이터가 없습니다</p</td>";
+                     //print_str += "<td><img src='resources/images/emptypage_image.png' width='400' height='150'></td>";
+                     print_str += "<td><p style='text-align: center; font-size: 17px; font-style: bold;'>수강내역이 없습니다.</p</td>";
                      print_str += "</tr>";
                      print_str += "</tbody>";
                   }
@@ -751,9 +931,9 @@ function sessionCheck(){
          });
          $('#btn_home').click(function(){
             $('#contentview').empty();
-			$('#contentview').load('${pageContext.request.contextPath}/view.jsp');
+			$('#contentview').load('${pageContext.request.contextPath}/notice.jsp');
 			
-			sidebarrefresh(); //새로고침//
+			 //새로고침//
            // var html_str = "<div id='contentview'>";
            // html_str += "<h3>Home View</h3>";
            // html_str += "<p>현재는 홈 뷰 (각 메뉴에 따라 뷰가 변경)</p>";
@@ -762,6 +942,19 @@ function sessionCheck(){
           //  $('#contentview').empty();
           //  $('#contentview').append(html_str);
          });
+         $('#btn_click').click(function(){
+             $('#contentview').empty();
+ 			$('#contentview').load('${pageContext.request.contextPath}/intro.jsp');
+ 			
+ 			 //새로고침//
+            // var html_str = "<div id='contentview'>";
+            // html_str += "<h3>Home View</h3>";
+            // html_str += "<p>현재는 홈 뷰 (각 메뉴에 따라 뷰가 변경)</p>";
+            // html_str += "</div>";
+             
+           //  $('#contentview').empty();
+           //  $('#contentview').append(html_str);
+          });
          $('#btn_logout').click(function(){
             alert("["+$('#sessionid').val() + "] 로그아웃... 이용해주셔서 감사합니다. (로그인 페이지로 이동합니다)");
          
@@ -805,85 +998,68 @@ function sessionCheck(){
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="collapse navbar-collapse" id="myNavbar-top">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" id="btn_logout"><span class="glyphicon glyphicon-log-in"></span>&nbsp로그아웃</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
+<nav class="navbar navbar-default navbar-static-top" id="nav2">
+  <div class="container-fluid">  
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <!-- <a class="navbar-brand" href="#">수강신청</a> -->
-      <img src="resources/images/uploadimg/luniv.png" id= "img-navbar" > 
+      <!-- <a class="navbar-brand" href="#">수강신청</a> -->      
+      <ul class="nav navbar-nav" id="nav-cont">
+      	<li><img src="resources/images/uploadimg/luniv.png" id= "img-navbar"></li>
+      	      
+        <li><a href="#" class="nav_btn" id="btn_home">Home</a></li>
+  		<li><a href="#" class="nav_btn" id="btn_click">소개</a></li>      
+        <li><a href="#" class="nav_btn" id="btn__enrolllist_click">수강신청</a></li>
+        <li><a href="#" class="nav_btn" id="btn__myenrolllist_click">내 수강정보 확인</a></li>
+      </ul>       
     </div>
     <div class="collapse navbar-collapse navbar-right" id="myNavbar">
-      <ul class="nav navbar-nav" id="nav-cont">
-        <li class="active"><a href="#" id="btn_home">Home</a></li>
-  		<li><a href="#" id="btn_click">소개</a></li>      
-         <li><a href="#" id="btn__enrolllist_click">수강신청</a></li>
-        <li><a href="#" id="btn__myenrolllist_click">내 수강정보 확인</a></li>
+    	<ul class="nav navbar-nav navbar-right">
+        <li><a href="#" class="nav_btn" id="btn_logout" style="color: #0366d6"><span class="glyphicon glyphicon-log-in"></span>&nbsp로그아웃</a></li>
       </ul>
     </div>
   </div>
 </nav>
+<hr>
   
 <div class="container-fluid text-center" id="main-container">    
   <div class="row content">
-     <div class="col-sm-2 sidenav" id="subjectlist" style="overflow:scroll; height:100%;">
-     <p>나의 수강과목 정보</p>
-     <!-- HTML에서 사용하는 배열 forEach -->
-		<c:forEach items='${listsubject}' var='subject'>
-		<div class="well">
-        	<p id="info_sub1"><c:out value='${subject.c_name}'/>&nbsp&nbsp&nbsp<c:out value='${subject.c_date_time}'/></p>
-      	</div>
-		</c:forEach>
+     <div class="col-sm-2 sidenav" id="subjectlist"  style="overflow:scroll; height:100%;">
+     
     </div>
     <div class="col-sm-8 text-left"> 
       <!-- <h1>롯데대학교 수강신청 프로그램</h1> -->
       <img src="resources/images/uploadimg/enroll.png" id="img-maincont"> 
-      <p>개발자: 윤태한</p>
       <hr>
       <div id="contentview">
-      	<h3>Home View</h3>
-      	<p>현재는 홈 뷰 (각 메뉴에 따라 뷰가 변경)</p>
+      	
       </div>
     </div>
    <div class="col-sm-2 sidenav">
-      	<h2>Profile</h2>
 		<div class="card">
   			<img src="resources/images/uploadimg/${imagefile}" class="" alt="Cinque Terre" style="width:100%">
   			<div>
-	  			<h4 id="title"><b>서창욱(${sessionId})</b>
-	  				<button type="button" class="btn btn-info" id="btn_myinfo_update">
-	                <img src="resources/images/settings.png" id="btn_setting"></button>
-	  			</h4> <!-- class="img-circle".....ㅎㅎ -->
+	  			<h6 id="title"><b>${sessionId}</b><br>
+	  			<p id="cardName">서창욱</p>
+	            </h6>
+	            <hr>
+	  			 <!-- class="img-circle".....ㅎㅎ -->
   			</div>
   			<input type="hidden" id="sessionid" value='${sessionId}'>
   			<div>
-    		<p id="#info_dept">학과 : ${major}</p>
-             <p id="#info_grade">학년 : ${year}</p>
-             <p id="#info_birth">생일 : ${birth}</p>
-             <p id="#info_gender">성별 : ${gender}</p>
-             <p id="#info_address">주소 : ${address}</p>
-             <p id="#info_email">이메일 : ${email}</p>
-             <p id="#info_phonenumber">전화번호 : ${phonenumber}</p>
-             <p id="#info_stunumber">학번 : ${stunumber}</p>
+    		<p id="#info_dept" class="info_data"><svg class="octicon octicon-globe" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 1C3.14 1 0 4.14 0 8s3.14 7 7 7c.48 0 .94-.05 1.38-.14-.17-.08-.2-.73-.02-1.09.19-.41.81-1.45.2-1.8-.61-.35-.44-.5-.81-.91-.37-.41-.22-.47-.25-.58-.08-.34.36-.89.39-.94.02-.06.02-.27 0-.33 0-.08-.27-.22-.34-.23-.06 0-.11.11-.2.13-.09.02-.5-.25-.59-.33-.09-.08-.14-.23-.27-.34-.13-.13-.14-.03-.33-.11s-.8-.31-1.28-.48c-.48-.19-.52-.47-.52-.66-.02-.2-.3-.47-.42-.67-.14-.2-.16-.47-.2-.41-.04.06.25.78.2.81-.05.02-.16-.2-.3-.38-.14-.19.14-.09-.3-.95s.14-1.3.17-1.75c.03-.45.38.17.19-.13-.19-.3 0-.89-.14-1.11-.13-.22-.88.25-.88.25.02-.22.69-.58 1.16-.92.47-.34.78-.06 1.16.05.39.13.41.09.28-.05-.13-.13.06-.17.36-.13.28.05.38.41.83.36.47-.03.05.09.11.22s-.06.11-.38.3c-.3.2.02.22.55.61s.38-.25.31-.55c-.07-.3.39-.06.39-.06.33.22.27.02.5.08.23.06.91.64.91.64-.83.44-.31.48-.17.59.14.11-.28.3-.28.3-.17-.17-.19.02-.3.08-.11.06-.02.22-.02.22-.56.09-.44.69-.42.83 0 .14-.38.36-.47.58-.09.2.25.64.06.66-.19.03-.34-.66-1.31-.41-.3.08-.94.41-.59 1.08.36.69.92-.19 1.11-.09.19.1-.06.53-.02.55.04.02.53.02.56.61.03.59.77.53.92.55.17 0 .7-.44.77-.45.06-.03.38-.28 1.03.09.66.36.98.31 1.2.47.22.16.08.47.28.58.2.11 1.06-.03 1.28.31.22.34-.88 2.09-1.22 2.28-.34.19-.48.64-.84.92s-.81.64-1.27.91c-.41.23-.47.66-.66.8 3.14-.7 5.48-3.5 5.48-6.84 0-3.86-3.14-7-7-7L7 1zm1.64 6.56c-.09.03-.28.22-.78-.08-.48-.3-.81-.23-.86-.28 0 0-.05-.11.17-.14.44-.05.98.41 1.11.41.13 0 .19-.13.41-.05.22.08.05.13-.05.14zM6.34 1.7c-.05-.03.03-.08.09-.14.03-.03.02-.11.05-.14.11-.11.61-.25.52.03-.11.27-.58.3-.66.25zm1.23.89c-.19-.02-.58-.05-.52-.14.3-.28-.09-.38-.34-.38-.25-.02-.34-.16-.22-.19.12-.03.61.02.7.08.08.06.52.25.55.38.02.13 0 .25-.17.25zm1.47-.05c-.14.09-.83-.41-.95-.52-.56-.48-.89-.31-1-.41-.11-.1-.08-.19.11-.34.19-.15.69.06 1 .09.3.03.66.27.66.55.02.25.33.5.19.63h-.01z"></path></svg>${major}</p>
+    		<p id="#info_stunumber" class="info_data"><svg class="octicon octicon-credit-card" viewBox="0 0 16 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 9H2V8h10v1zm4-6v9c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h14c.55 0 1 .45 1 1zm-1 3H1v6h14V6zm0-3H1v1h14V3zm-9 7H2v1h4v-1z"></path></svg>${stunumber}</p>
+             <p id="#info_grade" class="info_data"><svg class="octicon octicon-list-ordered" viewBox="0 0 12 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 13c0 .59 0 1-.59 1H4.59C4 14 4 13.59 4 13c0-.59 0-1 .59-1h6.81c.59 0 .59.41.59 1H12zM4.59 4h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1H4.59C4 2 4 2.41 4 3c0 .59 0 1 .59 1zm6.81 3H4.59C4 7 4 7.41 4 8c0 .59 0 1 .59 1h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1zM2 1h-.72c-.3.19-.58.25-1.03.34V2H1v2.14H.16V5H3v-.86H2V1zm.25 8.13c-.17 0-.45.03-.66.06.53-.56 1.14-1.25 1.14-1.89C2.71 6.52 2.17 6 1.37 6c-.59 0-.97.2-1.38.64l.58.58c.19-.19.38-.38.64-.38.28 0 .48.16.48.52 0 .53-.77 1.2-1.7 2.06V10h3l-.09-.88h-.66l.01.01zm-.08 3.78v-.03c.44-.19.64-.47.64-.86 0-.7-.56-1.11-1.44-1.11-.48 0-.89.19-1.28.52l.55.64c.25-.2.44-.31.69-.31.27 0 .42.13.42.36 0 .27-.2.44-.86.44v.75c.83 0 .98.17.98.47 0 .25-.23.38-.58.38-.28 0-.56-.14-.81-.38l-.48.66c.3.36.77.56 1.41.56.83 0 1.53-.41 1.53-1.16 0-.5-.31-.81-.77-.94v.01z"></path></svg>${year} 학년</p>
+             <p id="#info_birth" class="info_data"><svg class="octicon octicon-calendar" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13 2h-1v1.5c0 .28-.22.5-.5.5h-2c-.28 0-.5-.22-.5-.5V2H6v1.5c0 .28-.22.5-.5.5h-2c-.28 0-.5-.22-.5-.5V2H2c-.55 0-1 .45-1 1v11c0 .55.45 1 1 1h11c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm0 12H2V5h11v9zM5 3H4V1h1v2zm6 0h-1V1h1v2zM6 7H5V6h1v1zm2 0H7V6h1v1zm2 0H9V6h1v1zm2 0h-1V6h1v1zM4 9H3V8h1v1zm2 0H5V8h1v1zm2 0H7V8h1v1zm2 0H9V8h1v1zm2 0h-1V8h1v1zm-8 2H3v-1h1v1zm2 0H5v-1h1v1zm2 0H7v-1h1v1zm2 0H9v-1h1v1zm2 0h-1v-1h1v1zm-8 2H3v-1h1v1zm2 0H5v-1h1v1zm2 0H7v-1h1v1zm2 0H9v-1h1v1z"></path></svg>${birth}</p>             
+             <p id="#info_address" class="info_data"><svg aria-hidden="true" class="octicon octicon-location" height="16" version="1.1" viewBox="0 0 12 16" width="14"><path fill-rule="evenodd" d="M6 0C2.69 0 0 2.5 0 5.5 0 10.02 6 16 6 16s6-5.98 6-10.5C12 2.5 9.31 0 6 0zm0 14.55C4.14 12.52 1 8.44 1 5.5 1 3.02 3.25 1 6 1c1.34 0 2.61.48 3.56 1.36.92.86 1.44 1.97 1.44 3.14 0 2.94-3.14 7.02-5 9.05zM8 5.5c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/></svg>${address}</p>
+             <p></p>             
+             <hr>             
+             <p id="#info_email" class="info_data">
+             <svg aria-hidden="true" class="octicon octicon-mail" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M0 4v8c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H1c-.55 0-1 .45-1 1zm13 0L7 9 1 4h12zM1 5.5l4 3-4 3v-6zM2 12l3.5-3L7 10.5 8.5 9l3.5 3H2zm11-.5l-4-3 4-3v6z"/></svg>${email}
+             </p>
+             <p id="#info_phonenumber" class="info_data">
+             <svg class="octicon octicon-device-mobile" viewBox="0 0 10 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M9 0H1C.45 0 0 .45 0 1v14c0 .55.45 1 1 1h8c.55 0 1-.45 1-1V1c0-.55-.45-1-1-1zM5 15.3c-.72 0-1.3-.58-1.3-1.3 0-.72.58-1.3 1.3-1.3.72 0 1.3.58 1.3 1.3 0 .72-.58 1.3-1.3 1.3zM9 12H1V2h8v10z"/></svg>${phonenumber}
+             </p>
              <input type='hidden' id='stunum' value='${stunumber}'>
     		</div>
-    		<!-- 
-    		<div>
-    			<button type="button" class="btn btn-info" id="btn_myinfo_update">내 정보 수정</button>
-    		</div> 
-    		-->
   			<div class="container">
   			</div>
 		</div>
