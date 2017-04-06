@@ -234,7 +234,6 @@ function modalview_memowrite(){
             
             //location.reload();
             refreshcall(); //해당 테이블을 다시 호출한다.//
-            sidebarrefresh();
          }
          
          else{
@@ -242,7 +241,6 @@ function modalview_memowrite(){
             
             //location.reload();
             refreshcall();
-            sidebarrefresh();
          }
       },
       error: function(retVal, status, er){
@@ -284,14 +282,12 @@ function modalview_deletecourse(){
             alert('과목 삭제 성공');
             
             refreshcall();
-            sidebarrefresh();
          }
          
          else if(check == 'false'){
             alert('과목 삭제 실패');   
             
             refreshcall();
-            sidebarrefresh();
          }
       },
       error: function(retVal, status, er){
@@ -318,6 +314,7 @@ function sessionCheck(){
             $('#contentview').empty();
             $('#contentview').append(html_str);
          });
+         //////////////////////////////////////////창욱수정///////////////////////////////////////////////////
          $('#btn__enrolllist_click').click(function(){
             alert('선택');
             
@@ -325,7 +322,10 @@ function sessionCheck(){
             
             $('#contentview').empty();
             $('#contentview').append(html_str);
+            
+            
          });
+		 //////////////////////////////////////////////////////////////////////////////////////////////////
          $('#btn__myenrolllist_click').click(function(){
             var stunumber = $('#stunum').val();
          

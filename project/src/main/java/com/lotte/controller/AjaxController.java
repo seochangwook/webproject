@@ -302,6 +302,13 @@ public class AjaxController {
 		retVal.put("list", myenrollist);
 		retVal.put("check", "ok");
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return retVal;
 	}
 	
