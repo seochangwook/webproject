@@ -35,7 +35,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lotte.dto.IdExistDTO;
+import com.lotte.dto.CourseListDTO;
+import com.lotte.dto.CourseListRequestDTO;
 import com.lotte.dto.DeleteCourseDTO;
+import com.lotte.dto.EnrollCourseDTO;
 import com.lotte.dto.IdSearchDTO;
 import com.lotte.dto.LoginDTO;
 import com.lotte.dto.MemoUpdateDTO;
@@ -45,7 +48,9 @@ import com.lotte.dto.PasswordSearchDTO;
 import com.lotte.dto.StudentDTO;
 import com.lotte.log.Log;
 import com.lotte.service.EnrollService;
+import com.lotte.service.CourseListGetService;
 import com.lotte.service.DeleteCourseService;
+import com.lotte.service.EnrollCourseService;
 import com.lotte.service.IdSearchService;
 import com.lotte.service.LoginService;
 import com.lotte.service.MemoUpdateService;
@@ -225,7 +230,7 @@ public class AjaxController {
 		    
 		    String fileName_original = mFile.getOriginalFilename();
 		    //현재 프로젝트(서버)의 resources 경로//
-		    String file_save_path = "C:\\Users\\ROOM3_9\\git\\webproject\\project\\src\\main\\webapp\\resources\\images\\uploading";
+		    String file_save_path = "C:\\Users\\ROOM3_9\\git\\web\\project\\src\\main\\webapp\\resources\\images\\uploadimg\\";
 		             
 		    try {
 		    	mFile.transferTo(new File(file_save_path+fileName_original));
@@ -266,6 +271,7 @@ public class AjaxController {
 				multi.getParameter("stuNumber"), multi.getParameter("stuAddress"), multi.getParameter("deptNo"),
 				multi.getParameter("stuGrade"), multi.getParameter("stuEmail"), multi.getParameter("stuPhoneNumber"),
 				photofilename);
+		System.out.println("gender: " + stuDTO.getStuGender());
 		retVal.put("enrollSuccess", EnrollService.enrollStudent(stuDTO));
 		// 로그작업//
 		log = new Log();
@@ -336,6 +342,50 @@ public class AjaxController {
 		
 		//과목제거 서비스 호출//
 		isCheck = DeleteCourseService.deletecourseservice(deletecoursedto);
+		
+		retVal.put("check", ""+isCheck);
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/courselistajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> courseList(@RequestBody final CourseListRequestDTO courserequestdto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("course list ajax call success...");
+		
+		//수강신청 리스트를 불러온다.//
+		List<CourseListDTO> courselistdto = null;
+		
+		courselistdto = CourseListGetService.courselistservice(courserequestdto);
+		
+		if(courselistdto != null){
+			isCheck = true;
+		}
+		
+		retVal.put("check", ""+isCheck);
+		retVal.put("list", courselistdto);
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value = "/enrollcourseajax", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> enrollcourse(@RequestBody final EnrollCourseDTO enrollcoursedto) { 
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		boolean isCheck = false;
+		
+		System.out.println("enroll course ajax call success...");
+		
+		//과목제거 서비스 호출//
+		isCheck = EnrollCourseService.enrollcourseservice(enrollcoursedto);
 		
 		retVal.put("check", ""+isCheck);
 		

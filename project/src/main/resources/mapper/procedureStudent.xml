@@ -19,6 +19,7 @@
 			#{in_stu_email},
 			#{in_stu_phonenumber},
 			#{in_stu_photo},
+			#{in_stu_gender},
 			#{out_result, mode=OUT, jdbcType=VARCHAR, javaType=String, resultMap=p_userauth}
 		)
 	}

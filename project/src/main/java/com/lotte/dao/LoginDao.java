@@ -43,6 +43,7 @@ public class LoginDao {
 			parammap.put("in_stu_email", "");
 			parammap.put("in_stu_phonenumber", "");
 			parammap.put("in_stu_photo", "");
+			parammap.put("in_stu_gender", "");
 		
 			session.selectList(namespace+".p_userauth", parammap);
 			//result print//

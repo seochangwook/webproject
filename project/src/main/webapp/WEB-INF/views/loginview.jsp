@@ -166,6 +166,19 @@
 				  $(this).find('form')[0].reset()
 			});
 			
+			$('#btn-password').click(function(){
+				var pwd_value = $('#usrpawd').val();
+				var pwdCheck_value = $('#usrpawdcheck').val(); 
+				
+				if(pwdCheck_value != pwd_value){
+					alert('비밀번호가 일치하지 않습니다.');
+				}
+				
+				else if(pwdCheck_value == pwd_value){
+					alert('비밀번호가 확인 성공.');
+				}
+			});
+			
 			$('#enrollbutton').click(function(){				
 				var id_value = $('#usrId').val();
 				var pwd_value = $('#usrpawd').val();
@@ -180,10 +193,13 @@
 				var stunumber = $('#stunum').val();
 				var departtag = document.getElementById("sel1");
 				var departmentname = departtag.options[departtag.selectedIndex].value;
+				
+				//현재 임의로 컴퓨터공학과만 선택//
 				var departmentnumber = -1;
 				if(departmentname == '컴퓨터공학과'){
 					departmentnumber = 1;
 				}
+				
 				var email_value = $('#emailtext').val();
 				var gender_value = $('input[type=radio][name=optradio]:checked').val(); //라디오 버튼 선택값 가져오기//
 				var address_value = $('#address').val();
@@ -197,16 +213,21 @@
 					alert('아이디 또는 비밀번호를 입력하세요.');
 					CheckEnrollEnable = false
 				}
-				else if($('#hdnUserNotExist').val() == "false" ){					
+				if($('#hdnUserNotExist').val() == "false" ){					
 					alert("ID 중복체크를 해야합니다.");	
 					CheckEnrollEnable = false
 				}				
 				//ajax call을 통한 서버저장//
-				else if(pwdCheck_value != pwd_value){
+				if(pwdCheck_value != pwd_value){
 					alert('비밀번호가 일치하지 않습니다.');
 					CheckEnrollEnable = false
 				}
-				else if(files[0] == null){
+				
+				if(pwdCheck_value == pwd_value){
+					alert('비밀번호가 확인 성공.');
+					CheckEnrollEnable = true;
+				}
+				if(files[0] == null){
 					alert('반드시 파일을 1개이상 선택하세요!!');
 					CheckEnrollEnable = false
 				}		
@@ -301,7 +322,7 @@
 					success: function(retVal){
 						var searchid = retVal.id;
 						
-						if(searchid == ''){
+						if(searchid == '-1'){
 							alert('검색실패. 등록되지 않은 학생입니다.');
 						
 							$('#stunumberinput').val('');
@@ -385,7 +406,7 @@
 				var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
 				var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
 				var decrypted_password = CryptoJS.AES.decrypt(enpassword, key, { iv: iv });
-				
+		
 				alert('**인증성공** -> 비밀번호는 ['+decrypted_password.toString(CryptoJS.enc.Utf8)+'] 입니다.');	
 				
 				$('#passwordstu').val('');

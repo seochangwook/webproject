@@ -131,6 +131,7 @@ function refreshcall(){
           $('#contentview').empty();
           
           if(row_count >= 1){
+        	print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
             print_str = "<table class='table table-hover'>";
             print_str += "<thead>";
             print_str += "<tr>";
@@ -181,6 +182,7 @@ function refreshcall(){
          }
             
             print_str += "</table>";
+            print_str += "</div>";
             
             print_str += "<div>";
             print_str += "<p>* 총 학점: "+total_grade+"</p>";
@@ -198,6 +200,188 @@ function refreshcall(){
       }
    });
 }
+///////////////////////////////////////창욱수정(선택관련 리플래시)//////////////////////////////////////////////
+function refreshselectcourse(deptno){
+	var deptno = deptno;
+    
+    var trans_objeect = 
+    {
+        'deptno':deptno,
+    }
+    
+    var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+    
+    $.ajax({
+        url: "http://localhost:8080/project/courselistajax",
+        type: 'POST',
+        dataType: 'json',
+        data: trans_json,
+        contentType: 'application/json',
+        mimeType: 'application/json',
+        beforeSend:function(){
+            $('.wrap-loading').removeClass('display-none');
+        },
+        complete:function(){
+            $('.wrap-loading').addClass('display-none');
+        },
+        success: function(retVal){
+           var checkVal = retVal.check;   
+           var user_array = [];
+           //배열적용(ajax컨트롤러에서 HashMap으로 저장한 값을 불러온다.)//
+           user_array = retVal.list;
+           var row_count = user_array.length;
+  
+           $('#contentview').empty(); //화면을 초기화//
+           
+           var print_str = '';
+           
+           //select 박스 생성//
+           print_str += "<p>검색하고자 하는 학과를 선택하시오.  </p>";
+           print_str += "<div>"
+           print_str += "<select class='form-control' id='sel1' onchange='changeSelect()'>";
+           print_str += "<option value='학과선택'>학과선택</option>";
+           print_str += "<option value='1'>컴퓨터공학과</option>";
+           print_str += "<option value='2'>경영학과</option>";
+           print_str += "<option value='3'>문헌정보학과</option>";
+           print_str += "<option value='4'>정보보호학과</option>";
+           print_str += "<option value='5'>생명공학과</option>";
+           print_str += "<option value='6'>멀티미디어학과</option>";
+           print_str += "<option value='7'>간호학과</option>";
+           print_str += "<option value='8'>경제학과</option>";
+           print_str += "<option value='9'>영어영문학과</option>";
+           print_str += "<option value='10'>일어일문학과</option>";
+           print_str += "<option value='11'>중어중문학과</option>";
+           print_str += "<option value='12'>독어독문학과</option>";
+           print_str += "<option value='13'>불어불문학과</option>";
+           print_str += "<option value='14'>유아교육학과</option>";
+           print_str += "<option value='15'>과학교육과</option>";
+           print_str += "<option value='16'>컴퓨터교육과</option>";
+           print_str += "<option value='17'>심리학과</option>";
+           print_str += "<option value='18'>범죄심리학과</option>";
+           print_str += "<option value='19'>정치외교학과</option>";
+           print_str += "<option value='20'>행정학과</option>";
+           print_str += "</select>";
+           print_str += "</div>";
+           
+           print_str += "<div><hr></div>";
+           
+           $('#contentview').append(print_str); //증간적용//
+           
+           if(row_count >= 1){
+        	   print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
+               print_str += "<table class='table table-hover'>";
+               print_str += "<thead>";
+               print_str += "<tr>";
+               print_str += "<th>구분</th>";
+               print_str += "<th>학과이름</th>";
+               print_str += "<th>교수이름</th>";
+               print_str += "<th>과목번호</th>";
+               print_str += "<th>과목이름</th>";
+               print_str += "<th>수강요일</th>";
+               print_str += "<th>수강학점</th>";
+               print_str += "<th>등록(동일번호 전부 등록)</th>";
+               print_str += "</tr>";
+               print_str += "</thead>";
+               
+               print_str += "<tbody>";
+               //배열 출력(.each를 이용)//
+               $.each(user_array, function(index,value) {
+                  	 print_str += "<tr>";
+                     print_str += "<td>"+(index+1)+"</td>";
+                     print_str += "<td>"+value.dept_name+"</td>";
+                     print_str += "<td>"+value.pro_name+"</td>";
+                     print_str += "<td>"+value.c_number+"</td>";
+                     print_str += "<td>"+value.c_name+"</td>";
+                     print_str += "<td>"+value.c_date_time+"</td>";
+                     print_str += "<td>"+value.c_grade+"</td>";
+                     //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                     print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                     print_str += "</tr>";
+                  });   
+               print_str += "</tbody>";
+            }
+             
+             else if(row_count == 0){
+               print_str = "<table class='table table-hover'>";
+               print_str += "<tbody>";
+               print_str += "<tr>";
+               print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150'></td>";
+               print_str += "<td><p>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p</td>";
+               print_str += "</tr>";
+               print_str += "</tbody>";
+            }
+           
+           print_str += "</table>";
+           print_str += "</div>";
+           
+          
+           $('#contentview').append(print_str);
+           
+           sidebarrefresh();
+        },
+        error: function(retVal, status, er){
+           alert("error: "+retVal+" status: "+status+" er:"+er);
+        }
+    });
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////창욱수정(선택관련 함수)//////////////////////////////////////////////////
+function changeSelect(){
+	var selectBox = document.getElementById("sel1");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+	
+	//ajax call//
+	refreshselectcourse(selectedValue);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////창욱 수정(수강신청 관련 함수)//////////////////////////////////////////////
+function enrollcoursae(courseNumber){
+	var stuNumber = $('#stunum').val();
+	var selectBox = document.getElementById("sel1");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+	
+	//ajax call//
+	var trans_objeect = 
+	{
+		'courseNum':courseNumber,
+		'stuNum':stuNumber
+	}
+	
+	var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
+	
+	$.ajax({
+	      url: "http://localhost:8080/project/enrollcourseajax",
+	      type: 'POST',
+	      dataType: 'json',
+	      data: trans_json,
+	      contentType: 'application/json',
+	      mimeType: 'application/json',
+	      beforeSend:function(){
+	          $('.wrap-loading').removeClass('display-none');
+	      },
+	      complete:function(){
+	          $('.wrap-loading').addClass('display-none');
+	      },
+	      success: function(retVal){
+	         if(retVal.check == 'true'){
+	            alert('신청성공');
+	            
+	            //리플래시//
+	            sidebarrefresh();
+	         }
+	         
+	         else{
+	            alert('이미 수강신청된 과목이거나 학점과 수강일을 확인하세요.');
+	            
+	            sidebarrefresh();
+	         }
+	      },
+	      error: function(retVal, status, er){
+	         alert("error: "+retVal+" status: "+status+" er:"+er);
+	      }
+	});
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 function modalview_memowrite(){
    var cnumber = $('#memocnumber').val();
    var stuNumber = $('#stunum').val();
@@ -314,16 +498,128 @@ function sessionCheck(){
             $('#contentview').empty();
             $('#contentview').append(html_str);
          });
-         //////////////////////////////////////////창욱수정///////////////////////////////////////////////////
-         $('#btn__enrolllist_click').click(function(){
-            alert('선택');
+         //////////////////////////////////////////창욱수정(수강신청 리스트 불러오기)///////////////////////////////////////////////////
+         $('#btn__enrolllist_click').click(function(){  
+            //ajax call - 기본 출력되는 학과는 컴퓨터공학과로 설정 후 이 후 select 박스로 선택 후 적용//
+            var deptno = "1";
             
-            var html_str = "<p>수강신청 관련 뷰</p>";
+            var trans_objeect = 
+            {
+                'deptno':deptno,
+            }
             
-            $('#contentview').empty();
-            $('#contentview').append(html_str);
+            var trans_json = JSON.stringify(trans_objeect); //json으로 반환//
             
-            
+            $.ajax({
+                url: "http://localhost:8080/project/courselistajax",
+                type: 'POST',
+                dataType: 'json',
+                data: trans_json,
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                beforeSend:function(){
+                    $('.wrap-loading').removeClass('display-none');
+                },
+                complete:function(){
+                    $('.wrap-loading').addClass('display-none');
+                },
+                success: function(retVal){
+                   var checkVal = retVal.check;   
+                   var user_array = [];
+                   //배열적용(ajax컨트롤러에서 HashMap으로 저장한 값을 불러온다.)//
+                   user_array = retVal.list;
+                   var row_count = user_array.length;
+          
+                   $('#contentview').empty(); //화면을 초기화//
+                   
+                   var print_str = '';
+                   
+                   //select 박스 생성//
+                   print_str += "<p>검색하고자 하는 학과를 선택하시오. </p>";
+                   print_str += "<div>"
+                   print_str += "<select class='form-control' id='sel1' onchange='changeSelect()'>";
+                   print_str += "<option value='학과선택'>학과선택</option>";
+                   print_str += "<option value='1'>컴퓨터공학과</option>";
+                   print_str += "<option value='2'>경영학과</option>";
+                   print_str += "<option value='3'>문헌정보학과</option>";
+                   print_str += "<option value='4'>정보보호학과</option>";
+                   print_str += "<option value='5'>생명공학과</option>";
+                   print_str += "<option value='6'>멀티미디어학과</option>";
+                   print_str += "<option value='7'>간호학과</option>";
+                   print_str += "<option value='8'>경제학과</option>";
+                   print_str += "<option value='9'>영어영문학과</option>";
+                   print_str += "<option value='10'>일어일문학과</option>";
+                   print_str += "<option value='11'>중어중문학과</option>";
+                   print_str += "<option value='12'>독어독문학과</option>";
+                   print_str += "<option value='13'>불어불문학과</option>";
+                   print_str += "<option value='14'>유아교육학과</option>";
+                   print_str += "<option value='15'>과학교육과</option>";
+                   print_str += "<option value='16'>컴퓨터교육과</option>";
+                   print_str += "<option value='17'>심리학과</option>";
+                   print_str += "<option value='18'>범죄심리학과</option>";
+                   print_str += "<option value='19'>정치외교학과</option>";
+                   print_str += "<option value='20'>행정학과</option>";
+                   print_str += "</select>";
+                   print_str += "</div>";
+                   
+                   print_str += "<div><hr></div>";
+                   
+                   $('#contentview').append(print_str); //증간적용//
+                   
+                   if(row_count >= 1){
+                	   print_str = "<div style='width:100%; height:730px; overflow:auto'>"; //스크롤바//
+                       print_str += "<table class='table table-hover'>";
+                       print_str += "<thead>";
+                       print_str += "<tr>";
+                       print_str += "<th>구분</th>";
+                       print_str += "<th>학과이름</th>";
+                       print_str += "<th>교수이름</th>";
+                       print_str += "<th>과목번호</th>";
+                       print_str += "<th>과목이름</th>";
+                       print_str += "<th>수강요일</th>";
+                       print_str += "<th>수강학점</th>";
+                       print_str += "<th>등록(동일번호 전부 등록)</th>";
+                       print_str += "</tr>";
+                       print_str += "</thead>";
+                       
+                       print_str += "<tbody>";
+                       //배열 출력(.each를 이용)//
+                       $.each(user_array, function(index,value) {
+                          	 print_str += "<tr>";
+                             print_str += "<td>"+(index+1)+"</td>";
+                             print_str += "<td>"+value.dept_name+"</td>";
+                             print_str += "<td>"+value.pro_name+"</td>";
+                             print_str += "<td>"+value.c_number+"</td>";
+                             print_str += "<td>"+value.c_name+"</td>";
+                             print_str += "<td>"+value.c_date_time+"</td>";
+                             print_str += "<td>"+value.c_grade+"</td>";
+                             //onclick속성을 이용해서 직접 함수를 호출하고 값으로 현재 button태그에 value값을(pid) 이용한다.//
+                             print_str += "<td><button value='"+value.c_number+"' class='btn btn-success' onclick='enrollcoursae(this.value)'>신청</button></td>";
+                             print_str += "</tr>";
+                          });   
+                       print_str += "</tbody>";
+                    }
+                     
+                     else if(row_count == 0){
+                       print_str = "<table class='table table-hover'>";
+                       print_str += "<tbody>";
+                       print_str += "<tr>";
+                       print_str += "<td><img src='./resources/images/emptypage_image.png' width='400' height='150'></td>";
+                       print_str += "<td><p>해당 학과에 등록된 과목이 없습니다. 해당 학과사무실에 연락해주세요.</p</td>";
+                       print_str += "</tr>";
+                       print_str += "</tbody>";
+                    }
+                   
+                   print_str += "</table>";
+                   print_str += "</div>";
+                   
+                  
+                   $('#contentview').append(print_str);
+                },
+                error: function(retVal, status, er){
+                   alert("error: "+retVal+" status: "+status+" er:"+er);
+                }
+             });
          });
 		 //////////////////////////////////////////////////////////////////////////////////////////////////
          $('#btn__myenrolllist_click').click(function(){
@@ -363,6 +659,7 @@ function sessionCheck(){
                    $('#contentview').empty();
                    
                    if(row_count >= 1){
+                	 print_str = "<div style='width:100%; height:700px; overflow:auto'>"; //스크롤바//
                      print_str = "<table class='table table-hover'>";
                      print_str += "<thead>";
                      print_str += "<tr>";
@@ -413,6 +710,7 @@ function sessionCheck(){
                   }
                       
                       print_str += "</table>";
+                      print_str += "</div>";
                       
                       print_str += "<div>";
                       print_str += "<p>* 총 학점: "+total_grade+"</p>";
@@ -540,12 +838,12 @@ function sessionCheck(){
   
 <div class="container-fluid text-center" id="main-container">    
   <div class="row content">
-     <div class="col-sm-2 sidenav" id="subjectlist">
+     <div class="col-sm-2 sidenav" id="subjectlist" style="overflow:scroll; height:100%;">
      <p>나의 수강과목 정보</p>
      <!-- HTML에서 사용하는 배열 forEach -->
 		<c:forEach items='${listsubject}' var='subject'>
 		<div class="well">
-        	<p id="info_sub1"><c:out value='${subject.c_name}'/>&nbsp&nbsp<c:out value='${subject.c_date_time}'/></p>
+        	<p id="info_sub1"><c:out value='${subject.c_name}'/>&nbsp&nbsp&nbsp<c:out value='${subject.c_date_time}'/></p>
       	</div>
 		</c:forEach>
     </div>

@@ -1,4 +1,4 @@
-package com.lotte.util;
+package com.util.lotte;
 
 import java.io.IOException;
 import java.io.InputStream;

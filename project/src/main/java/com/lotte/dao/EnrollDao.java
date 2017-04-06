@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.lotte.dto.StudentDTO;
-import com.lotte.util.DBUtil;
+import com.util.lotte.DBUtil;
 
 public class EnrollDao {
 	
@@ -40,6 +40,7 @@ public class EnrollDao {
 			parammap.put("in_stu_email", "");
 			parammap.put("in_stu_phonenumber", "");
 			parammap.put("in_stu_photo", "");
+			parammap.put("in_stu_gender", "");
 
 			session.selectList(namespace + ".p_userauth", parammap);
 			// result print//
@@ -86,6 +87,7 @@ public class EnrollDao {
 			parammap.put("in_stu_email", stuDTO.getStuEmail());
 			parammap.put("in_stu_phonenumber", stuDTO.getStuPhoneNumber());
 			parammap.put("in_stu_photo", stuDTO.getStuPhoto());
+			parammap.put("in_stu_gender", stuDTO.getStuGender());
 		
 			System.out.println("selectStart");
 			System.out.println(stuDTO.toString());

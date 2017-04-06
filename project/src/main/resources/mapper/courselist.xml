@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sql">
+	<select id="courselist" parameterType="hashmap" resultType="com.lotte.dto.CourseListDTO">
+		SELECT d.dept_name, p.pro_name, c.c_number, c.c_name, c.c_date_time, c.c_grade
+		FROM department d, professor p , course c
+		WHERE d.DEPT_NO = c.DEPT_NO AND p.PRO_NUMBER = c.PRO_NUMBER AND c.DEPT_NO=${deptNumber}
+	</select>
+</mapper>
